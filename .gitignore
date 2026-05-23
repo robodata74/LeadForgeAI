@@ -1,5 +1,22 @@
-venv/
+# Python
 __pycache__/
 *.pyc
-leads.db
+*.pyo
+*.pyd
+
+# Virtual env
+venv/
+env/
+
+# Database
+*.db
+
+# Environment variables
 .env
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
