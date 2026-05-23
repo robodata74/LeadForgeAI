@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="hero">
+
+    <h1>Turn Attention Into Paying Customers</h1>
+
+    <p>
+        LeadForgeAI helps you capture, qualify, and convert high-intent leads
+        using intelligent automation and AI-driven scoring.
+    </p>
+
+    <button class="cta-btn"
+        onclick="document.getElementById('leadForm').scrollIntoView({behavior:'smooth'})">
+        Start Free
+    </button>
+
+</section>
+
+<div class="image-section">
+    <img src="/static/images/leadforge-hero.png" alt="Dashboard Preview">
+</div>
+
+<section class="features">
+
+    <div class="card">
+        <h3>AI Lead Capture</h3>
+        <p>Automatically collect and structure incoming leads.</p>
+    </div>
+
+    <div class="card">
+        <h3>Smart Scoring</h3>
+        <p>HOT / WARM / COLD classification engine.</p>
+    </div>
+
+    <div class="card">
+        <h3>Conversion Engine</h3>
+        <p>Focus only on leads that matter.</p>
+    </div>
+
+</section>
+
+<section class="form-section">
+
+    <h2>Capture Your First Leads</h2>
+
+    <form id="leadForm" method="POST" action="/capture">
+
+        <input name="name" placeholder="Full Name" required>
+        <input name="email" placeholder="Email Address" required>
+        <input name="business" placeholder="Business Type" required>
+
+        <button class="submit" type="submit">Submit Lead</button>
+
+    </form>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="dashboard">
+
+    <h1>LeadForgeAI Dashboard</h1>
+
+    <div class="stats">
+        <div class="stat">Total: {{ stats.total }}</div>
+        <div class="stat hot">HOT: {{ stats.hot }}</div>
+        <div class="stat warm">WARM: {{ stats.warm }}</div>
+        <div class="stat cold">COLD: {{ stats.cold }}</div>
+    </div>
+
+    <h3>Lead Pipeline</h3>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Business</th>
+            <th>Score</th>
+        </tr>
+
+        {% for lead in leads %}
+        <tr>
+            <td>{{ lead["id"] }}</td>
+            <td>{{ lead["name"] }}</td>
+            <td>{{ lead["email"] }}</td>
+            <td>{{ lead["business"] }}</td>
+            <td><span class="badge">{{ lead["score"] }}</span></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+{% endblock %}

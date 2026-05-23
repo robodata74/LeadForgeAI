@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LeadForgeAI Admin Login</title>
+
+    <link rel="icon" type="image/png"
+    href="{{ url_for('static', filename='images/favicon.png') }}">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            background:#0b1120;
+            font-family:Arial, sans-serif;
+            color:white;
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            padding:40px;
+        }
+
+        .login-container{
+            width:100%;
+            max-width:500px;
+            background:#111827;
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:24px;
+            padding:60px;
+            box-shadow:
+            0 10px 40px rgba(0,0,0,.35);
+        }
+
+        .logo{
+            font-size:38px;
+            font-weight:700;
+            margin-bottom:16px;
+        }
+
+        .logo span{
+            color:#00d4aa;
+        }
+
+        .subtitle{
+            color:#94a3b8;
+            font-size:16px;
+            line-height:1.7;
+            margin-bottom:40px;
+        }
+
+        .form-group{
+            margin-bottom:24px;
+        }
+
+        label{
+            display:block;
+            margin-bottom:10px;
+            color:#cbd5e1;
+            font-size:14px;
+        }
+
+        input{
+            width:100%;
+            padding:18px;
+            border-radius:14px;
+            border:1px solid #1f2937;
+            background:#0f172a;
+            color:white;
+            font-size:16px;
+            outline:none;
+        }
+
+        input:focus{
+            border-color:#00d4aa;
+        }
+
+        button{
+            width:100%;
+            padding:18px;
+            border:none;
+            border-radius:14px;
+            background:#00d4aa;
+            color:#07111f;
+            font-size:16px;
+            font-weight:700;
+            cursor:pointer;
+            transition:.25s ease;
+        }
+
+        button:hover{
+            transform:translateY(-2px);
+        }
+
+        .footer-text{
+            margin-top:28px;
+            text-align:center;
+            color:#64748b;
+            font-size:14px;
+        }
+
+        .flash-message{
+            background:#2b1f1f;
+            border:1px solid #ef4444;
+            color:#fecaca;
+            padding:14px;
+            border-radius:12px;
+            margin-bottom:25px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+
+    <div class="logo">
+        LeadForge<span>AI</span>
+    </div>
+
+    <p class="subtitle">
+        Secure admin access to your lead intelligence dashboard.
+    </p>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash-message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+
+        <div class="form-group">
+            <label>Username</label>
+            <input
+                type="text"
+                name="username"
+                placeholder="Enter username"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input
+                type="password"
+                name="password"
+                placeholder="Enter password"
+                required
+            >
+        </div>
+
+        <button type="submit">
+            Access Dashboard
+        </button>
+
+    </form>
+
+    <div class="footer-text">
+        LeadForgeAI • Intelligent Lead Conversion
+    </div>
+
+</div>
+
+</body>
+</html>

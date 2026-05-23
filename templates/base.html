@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LeadForgeAI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+<div class="navbar">
+    <div class="nav-left">
+        <a href="/">🏠 Home</a>
+        <a href="/dashboard">📊 Dashboard</a>
+        <a href="/#leadForm">➕ Add Lead</a>
+        <a href="#" onclick="toggleCopilot()">🤖 Copilot</a>
+    </div>
+
+    <div class="nav-right">
+        <a href="/logout">🚪 Logout</a>
+    </div>
+</div>
+
+<!-- FLASH MESSAGES -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash-container">
+        {% for message in messages %}
+            <div class="flash">{{ message }}</div>
+        {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<!-- MAIN CONTENT -->
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+<!-- COPILOT -->
+<div id="copilot-panel" class="copilot hidden">
+
+    <div class="copilot-header">
+        🤖 LeadForge Copilot
+        <span onclick="toggleCopilot()">✖</span>
+    </div>
+
+    <div id="copilot-chat" class="copilot-chat"></div>
+
+    <div class="copilot-input">
+        <input id="copilot-input" placeholder="Ask about leads, strategy..." />
+        <button onclick="sendCopilot()">Send</button>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='copilot.js') }}"></script>
+
+</body>
+</html>
