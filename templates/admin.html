@@ -4,24 +4,50 @@
 
 <div class="dashboard">
 
-    <h1>LeadForgeAI Dashboard</h1>
+    <h1>LeadForge AI Dashboard</h1>
 
-    <div class="stats">
-        <div class="stat">Total: {{ stats.total }}</div>
-        <div class="stat hot">HOT: {{ stats.hot }}</div>
-        <div class="stat warm">WARM: {{ stats.warm }}</div>
-        <div class="stat cold">COLD: {{ stats.cold }}</div>
+    <!-- KPI CARDS -->
+    <div class="stats-grid">
+
+        <div class="card">
+            <h2>{{ stats.total }}</h2>
+            <p>Total Leads</p>
+        </div>
+
+        <div class="card hot">
+            <h2>{{ stats.hot }}</h2>
+            <p>HOT Leads</p>
+        </div>
+
+        <div class="card warm">
+            <h2>{{ stats.warm }}</h2>
+            <p>WARM Leads</p>
+        </div>
+
+        <div class="card cold">
+            <h2>{{ stats.cold }}</h2>
+            <p>COLD Leads</p>
+        </div>
+
     </div>
 
-    <h3>Lead Pipeline</h3>
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+        <a href="/export" class="btn">Export CSV</a>
+        <a href="/logout" class="btn danger">Logout</a>
+    </div>
 
-    <table>
+    <!-- LEADS TABLE -->
+    <h2>Lead Pipeline</h2>
+
+    <table class="table">
         <tr>
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Business</th>
             <th>Score</th>
+            <th>Action</th>
         </tr>
 
         {% for lead in leads %}
@@ -30,7 +56,14 @@
             <td>{{ lead["name"] }}</td>
             <td>{{ lead["email"] }}</td>
             <td>{{ lead["business"] }}</td>
-            <td><span class="badge">{{ lead["score"] }}</span></td>
+            <td>
+                <span class="badge {{ lead['score'] }}">
+                    {{ lead["score"] }}
+                </span>
+            </td>
+            <td>
+                <a href="/delete/{{ lead['id'] }}" class="delete">Delete</a>
+            </td>
         </tr>
         {% endfor %}
     </table>

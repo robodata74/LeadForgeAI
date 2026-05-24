@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upgrade to LeadForge PRO</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body{
+            font-family:Arial;
+            background:#0f172a;
+            color:white;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        .card{
+            background:#111827;
+            padding:40px;
+            border-radius:20px;
+            width:420px;
+            text-align:center;
+            box-shadow:0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        h1{
+            color:#22c55e;
+            margin-bottom:10px;
+        }
+
+        p{
+            color:#94a3b8;
+            margin-bottom:25px;
+        }
+
+        .price{
+            font-size:28px;
+            margin:20px 0;
+        }
+
+        .btn{
+            background:#2563eb;
+            padding:14px;
+            border-radius:10px;
+            color:white;
+            text-decoration:none;
+            display:inline-block;
+            margin-top:20px;
+        }
+    </style>
+
+    <!-- PAYPAL SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=BAAv0Ct7cUeb8hoVYp_ix_DRCsXlfExc-4_r8TX6wPXMSPiX517Zz1QbEthEVKOT_GqF3ZN7CNjk8dLP2I&components=hosted-buttons&currency=USD"></script>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h1>Unlock LeadForge PRO 🚀</h1>
+
+    <p>Access AI Copilot, lead ranking & automation tools</p>
+
+    <div class="price">$9.99 / month</div>
+
+    <!-- PAYPAL BUTTON -->
+    <div id="paypal-container-L3FTPHM26TZHJ"></div>
+
+    <script>
+      paypal.HostedButtons({
+        hostedButtonId: "L3FTPHM26TZHJ",
+      }).render("#paypal-container-L3FTPHM26TZHJ");
+    </script>
+
+    <a class="btn" href="/login">Admin Login</a>
+
+</div>
+
+</body>
+</html>

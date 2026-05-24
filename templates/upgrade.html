@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upgrade to LeadForge Pro</title>
+
+    <!-- PAYPAL SDK (Part 1 - MUST BE IN HEAD ONCE) -->
+    <script 
+      src="https://www.paypal.com/sdk/js?client-id=BAAv0Ct7cUeb8hoVYp_ix_DRCsXlfExc-4_r8TX6wPXMSPiX517Zz1QbEthEVKOT_GqF3ZN7CNjk8dLP2I&components=hosted-buttons&disable-funding=venmo&currency=USD">
+    </script>
+
+    <style>
+        body{
+            font-family: Arial;
+            background:#f5f7fb;
+            text-align:center;
+            padding:60px;
+        }
+
+        .box{
+            max-width:500px;
+            margin:auto;
+            background:white;
+            padding:40px;
+            border-radius:20px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        h1{
+            color:#1e293b;
+        }
+
+        p{
+            color:#64748b;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>🚀 Upgrade to LeadForge Pro</h1>
+
+    <p>
+        Unlock AI Copilot, smart lead insights, and premium tools.
+    </p>
+
+    <h2>$9.99 / one-time</h2>
+
+    <!-- PAYPAL BUTTON (Part 2) -->
+    <div id="paypal-container-L3FTPHM26TZHJ"></div>
+
+    <script>
+      paypal.HostedButtons({
+        hostedButtonId: "L3FTPHM26TZHJ",
+      }).render("#paypal-container-L3FTPHM26TZHJ")
+    </script>
+
+</div>
+
+</body>
+</html>

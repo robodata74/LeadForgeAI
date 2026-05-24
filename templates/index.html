@@ -1,60 +1,300 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block content %}
+    <title>LeadForgeAI | AI-Powered Lead Intelligence</title>
 
+    <meta name="description"
+          content="Stop wasting time on cold leads. LeadForgeAI helps businesses identify high-converting opportunities using intelligent lead scoring.">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
+    <div class="container nav-flex">
+
+        <div class="logo">
+            <h2>LeadForge<span>AI</span></h2>
+        </div>
+
+        <nav>
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+            <a href="{{ url_for('login') }}">Dashboard</a>
+        </nav>
+
+    </div>
+</header>
+
+
+<!-- ================= HERO SECTION ================= -->
 <section class="hero">
 
-    <h1>Turn Attention Into Paying Customers</h1>
+    <div class="container hero-grid">
 
-    <p>
-        LeadForgeAI helps you capture, qualify, and convert high-intent leads
-        using intelligent automation and AI-driven scoring.
-    </p>
+        <!-- LEFT -->
+        <div class="hero-content">
 
-    <button class="cta-btn"
-        onclick="document.getElementById('leadForm').scrollIntoView({behavior:'smooth'})">
-        Start Free
-    </button>
+            <div class="badge">
+                🚀 AI-Powered Lead Intelligence
+            </div>
+
+            <h1>
+                Stop Chasing Cold Leads.
+                Let AI Show You
+                <span class="gradient-text">
+                    Who Will Actually Buy.
+                </span>
+            </h1>
+
+            <p>
+                LeadForgeAI helps founders, agencies,
+                consultants and growth teams prioritize
+                the highest-converting prospects —
+                before competitors even know they exist.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="#leadForm" class="btn-primary">
+                    Start Free
+                </a>
+
+                <a href="#pricing" class="btn-secondary">
+                    View Pricing
+                </a>
+            </div>
+
+            <div class="hero-proof">
+                Trusted by growth-focused businesses
+                to prioritize opportunities faster.
+            </div>
+
+        </div>
+
+        <!-- RIGHT / FORM -->
+        <div class="lead-card" id="leadForm">
+
+            <h2>Get Started Free</h2>
+
+            <p>
+                Add your first lead and let AI score it instantly.
+            </p>
+
+            <form action="/capture" method="POST">
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Full Name"
+                    required
+                >
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Business Email"
+                    required
+                >
+
+                <input
+                    type="text"
+                    name="business"
+                    placeholder="Business Type"
+                    required
+                >
+
+                <button type="submit">
+                    Analyze My Lead →
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
 
 </section>
 
-<div class="image-section">
-    <img src="/static/images/leadforge-hero.png" alt="Dashboard Preview">
-</div>
 
-<section class="features">
+<!-- ================= FEATURES ================= -->
+<section class="features" id="features">
 
-    <div class="card">
-        <h3>AI Lead Capture</h3>
-        <p>Automatically collect and structure incoming leads.</p>
-    </div>
+    <div class="container">
 
-    <div class="card">
-        <h3>Smart Scoring</h3>
-        <p>HOT / WARM / COLD classification engine.</p>
-    </div>
+        <div class="section-header center">
+            <h2>Why Businesses Use LeadForgeAI</h2>
 
-    <div class="card">
-        <h3>Conversion Engine</h3>
-        <p>Focus only on leads that matter.</p>
+            <p>
+                Stop guessing who will convert.
+                Start prioritizing revenue.
+            </p>
+        </div>
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+                <h3>🔥 Smart Lead Scoring</h3>
+                <p>
+                    Automatically classify leads into
+                    HOT, WARM, and COLD opportunities
+                    using AI-powered intelligence.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>⚡ Faster Sales Decisions</h3>
+                <p>
+                    Know exactly where your sales team
+                    should focus first to maximize conversions.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>📈 Revenue-First Prioritization</h3>
+                <p>
+                    Spend less time chasing dead leads
+                    and more time closing profitable clients.
+                </p>
+            </div>
+
+        </div>
+
     </div>
 
 </section>
 
-<section class="form-section">
 
-    <h2>Capture Your First Leads</h2>
+<!-- ================= HOW IT WORKS ================= -->
+<section class="workflow">
 
-    <form id="leadForm" method="POST" action="/capture">
+    <div class="container center">
 
-        <input name="name" placeholder="Full Name" required>
-        <input name="email" placeholder="Email Address" required>
-        <input name="business" placeholder="Business Type" required>
+        <h2>How LeadForgeAI Works</h2>
 
-        <button class="submit" type="submit">Submit Lead</button>
+        <div class="workflow-grid">
 
-    </form>
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Add Lead</h3>
+                <p>
+                    Enter prospect details in seconds.
+                </p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>AI Scores Lead</h3>
+                <p>
+                    Our engine identifies buyer intent.
+                </p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Close Faster</h3>
+                <p>
+                    Focus only on opportunities likely to convert.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
 
 </section>
 
-{% endblock %}
+
+<!-- ================= PRICING ================= -->
+<section class="pricing" id="pricing">
+
+    <div class="container center">
+
+        <h2>Simple Pricing</h2>
+
+        <p class="pricing-subtitle">
+            One affordable plan for serious growth.
+        </p>
+
+        <div class="price-card">
+
+            <div class="plan-badge">
+                MOST POPULAR
+            </div>
+
+            <h3>LeadForge Pro</h3>
+
+            <div class="price">
+                $9.99
+                <span>/month</span>
+            </div>
+
+            <ul>
+                <li>✅ AI Lead Scoring</li>
+                <li>✅ Admin Dashboard</li>
+                <li>✅ Lead Tracking</li>
+                <li>✅ Revenue Prioritization</li>
+                <li>✅ Future AI Copilot</li>
+            </ul>
+
+            <a href="{{ url_for('login') }}"
+               class="btn-primary pricing-btn">
+                Upgrade to Pro
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CTA ================= -->
+<section class="cta">
+
+    <div class="container center">
+
+        <h2>
+            Stop Losing Revenue to Cold Prospects
+        </h2>
+
+        <p>
+            Join businesses using AI to focus on leads
+            that actually convert.
+        </p>
+
+        <a href="#leadForm" class="btn-primary">
+            Get Started Now
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+<footer>
+
+    <div class="container">
+
+        <h3>LeadForgeAI</h3>
+
+        <p>
+            AI-powered lead intelligence for modern businesses.
+        </p>
+
+        <small>
+            © 2026 LeadForgeAI. All Rights Reserved.
+        </small>
+
+    </div>
+
+</footer>
+
+</body>
+</html>

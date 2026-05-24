@@ -2,61 +2,127 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>LeadForgeAI</title>
+    <title>LeadForge AI</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- ================= CSS ================= -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <!-- ================= META UX SAFETY ================= -->
+    <meta name="description" content="LeadForge AI - Intelligent Lead Generation & Sales Copilot">
 </head>
 
 <body>
 
-<!-- NAVIGATION -->
+<!-- ================= NAVBAR ================= -->
 <div class="navbar">
-    <div class="nav-left">
-        <a href="/">🏠 Home</a>
-        <a href="/dashboard">📊 Dashboard</a>
-        <a href="/#leadForm">➕ Add Lead</a>
-        <a href="#" onclick="toggleCopilot()">🤖 Copilot</a>
-    </div>
 
-    <div class="nav-right">
-        <a href="/logout">🚪 Logout</a>
+    <div class="nav-flex">
+
+        <!-- LEFT NAV -->
+        <div class="nav-left">
+            <span class="logo">LeadForge<span style="color:#2563eb;">AI</span></span>
+
+            <a href="{{ url_for('home') }}">🏠 Home</a>
+            <a href="{{ url_for('admin') }}">📊 Dashboard</a>
+            <a href="#leadForm">➕ Add Lead</a>
+
+            <!-- COPILOT TRIGGER -->
+            <a href="#" onclick="toggleCopilot()">🤖 Copilot</a>
+
+            <!-- UPGRADE CTA (SAAS CORE FEATURE) -->
+            <a href="{{ url_for('upgrade') }}" style="color:#2563eb;font-weight:bold;">
+                💎 Upgrade
+            </a>
+        </div>
+
+        <!-- RIGHT NAV -->
+        <div class="nav-right">
+
+            <!-- LOGOUT -->
+            <a href="{{ url_for('logout') }}">🚪 Logout</a>
+
+        </div>
+
     </div>
 </div>
 
-<!-- FLASH MESSAGES -->
+
+<!-- ================= FLASH MESSAGES ================= -->
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     <div class="flash-container">
+
         {% for message in messages %}
-            <div class="flash">{{ message }}</div>
+            <div class="flash">
+                {{ message }}
+            </div>
         {% endfor %}
+
     </div>
   {% endif %}
 {% endwith %}
 
-<!-- MAIN CONTENT -->
+
+<!-- ================= MAIN CONTENT ================= -->
 <div class="container">
     {% block content %}{% endblock %}
 </div>
 
-<!-- COPILOT -->
+
+<!-- ================= COPILOT PANEL (SAAS FEATURE CORE) ================= -->
 <div id="copilot-panel" class="copilot hidden">
 
     <div class="copilot-header">
+
         🤖 LeadForge Copilot
-        <span onclick="toggleCopilot()">✖</span>
+
+        <span onclick="toggleCopilot()" style="cursor:pointer;">
+            ✖
+        </span>
+
     </div>
 
-    <div id="copilot-chat" class="copilot-chat"></div>
+    <div id="copilot-chat" class="copilot-chat">
+
+        <div class="copilot-welcome">
+            <p>👋 I’m your AI Sales Assistant.</p>
+            <p style="opacity:0.7;">
+                Ask me to analyze leads, prioritize sales, or suggest actions.
+            </p>
+        </div>
+
+    </div>
 
     <div class="copilot-input">
-        <input id="copilot-input" placeholder="Ask about leads, strategy..." />
-        <button onclick="sendCopilot()">Send</button>
+
+        <input
+            id="copilot-input"
+            placeholder="Ask about leads, strategy..."
+            autocomplete="off"
+        />
+
+        <button onclick="sendCopilot()">
+            Send
+        </button>
+
     </div>
+
 </div>
 
+
+<!-- ================= GLOBAL SCRIPTS ================= -->
 <script src="{{ url_for('static', filename='copilot.js') }}"></script>
+
+<!-- ================= FUTURE SaaS HOOK (PHASE 5.2 READY) ================= -->
+<script>
+    // Placeholder for future subscription state
+    window.LEADFORGE_APP = {
+        version: "5.1",
+        mode: "saas-mvp"
+    };
+</script>
 
 </body>
 </html>

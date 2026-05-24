@@ -1,358 +1,237 @@
-
 /* =========================
-   DESIGN SYSTEM VARIABLES
+   LEADFORGE AI — UI SYSTEM v1
+   SaaS Conversion Optimized
 ========================= */
-:root {
-    --bg: #0b0f1a;
-    --panel: #121a2b;
-    --panel-2: #1a2338;
-    --accent: #00ffcc;
-    --text: #ffffff;
-    --muted: rgba(255,255,255,0.7);
-    --danger: #ff4d4d;
-    --warn: #ffa500;
-    --border: rgba(255,255,255,0.08);
-}
 
-/* =========================
-   GLOBAL RESET
-========================= */
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    margin: 0;
     font-family: Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    background: #f5f7fb;
+    color: #1e293b;
+    line-height: 1.5;
 }
 
 /* =========================
    LAYOUT
 ========================= */
+
 .container {
-    padding: 20px;
-}
-
-/* =========================
-   NAVBAR (SAAS STYLE)
-========================= */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--panel);
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.navbar a {
-    color: var(--text);
-    margin-right: 15px;
-    text-decoration: none;
-    font-size: 14px;
-    opacity: 0.85;
-    transition: 0.2s;
-}
-
-.navbar a:hover {
-    opacity: 1;
-    color: var(--accent);
-}
-
-/* =========================
-   FLASH MESSAGES
-========================= */
-.flash-container {
-    margin: 10px 0;
-}
-
-.flash {
-    background: var(--panel-2);
-    padding: 10px;
-    border-left: 4px solid var(--accent);
-    margin-bottom: 10px;
-    border-radius: 6px;
-}
-
-/* =========================
-   DASHBOARD (SAAS GRID)
-========================= */
-.dashboard {
-    max-width: 1100px;
+    width: 92%;
+    max-width: 1200px;
     margin: auto;
 }
 
 /* =========================
-   STATS CARDS
+   NAVBAR
 ========================= */
+
+.navbar {
+    background: white;
+    padding: 16px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.nav-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a {
+    margin-left: 18px;
+    text-decoration: none;
+    color: #1e293b;
+    font-weight: 500;
+}
+
+.logo {
+    color: #2563eb;
+    font-weight: 700;
+}
+
+/* =========================
+   HERO (SAAS CONVERSION CORE)
+========================= */
+
+.hero {
+    padding: 80px 0;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.hero h1 {
+    font-size: 54px;
+    margin-bottom: 16px;
+    font-weight: 800;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #64748b;
+    margin-bottom: 25px;
+}
+
+/* =========================
+   BUTTONS (SAAS CTA SYSTEM)
+========================= */
+
+.btn-primary {
+    background: #2563eb;
+    color: white;
+    padding: 14px 22px;
+    border-radius: 10px;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 600;
+}
+
+.btn-secondary {
+    background: #111827;
+    color: white;
+    padding: 14px 22px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+/* =========================
+   LEAD FORM CARD
+========================= */
+
+.lead-card {
+    background: white;
+    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+.lead-card input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.lead-card button {
+    width: 100%;
+    padding: 14px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* =========================
+   FEATURES GRID
+========================= */
+
+.features {
+    padding: 70px 0;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.feature-card {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard {
+    padding: 40px 0;
+}
+
 .stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 15px;
-    margin-bottom: 25px;
+    margin: 20px 0;
 }
 
 .stat {
-    background: var(--panel);
-    padding: 20px;
+    background: white;
+    padding: 18px;
     border-radius: 12px;
-    text-align: center;
-    font-weight: bold;
-    border: 1px solid var(--border);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.04);
+    font-weight: 600;
 }
 
-.stat.hot {
-    border-left: 4px solid var(--danger);
-}
-
-.stat.warm {
-    border-left: 4px solid var(--warn);
-}
-
-.stat.cold {
-    border-left: 4px solid var(--accent);
-}
+.stat.hot { border-left: 4px solid #ef4444; }
+.stat.warm { border-left: 4px solid #f59e0b; }
+.stat.cold { border-left: 4px solid #64748b; }
 
 /* =========================
-   TABLE (CRM STYLE)
+   TABLE
 ========================= */
+
 table {
     width: 100%;
-    border-collapse: collapse;
-    background: var(--panel);
+    background: white;
     border-radius: 12px;
     overflow: hidden;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.04);
 }
 
 th, td {
     padding: 14px;
-    border-bottom: 1px solid var(--border);
     text-align: left;
-    font-size: 14px;
-}
-
-th {
-    color: var(--accent);
-}
-
-tr:hover {
-    background: var(--panel-2);
+    border-bottom: 1px solid #f1f5f9;
 }
 
 .badge {
-    padding: 4px 10px;
-    border-radius: 6px;
-    background: var(--accent);
-    color: black;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #e2e8f0;
     font-size: 12px;
-}
-
-/* =========================
-   HERO SECTION (LANDING)
-========================= */
-.hero {
-    text-align: center;
-    padding: 100px 20px 60px;
-}
-
-.hero h1 {
-    font-size: 42px;
-    margin-bottom: 20px;
-}
-
-.hero p {
-    max-width: 650px;
-    margin: auto;
-    color: var(--muted);
-}
-
-.cta-btn {
-    margin-top: 20px;
-    background: var(--accent);
-    border: none;
-    padding: 14px 26px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 8px;
-}
-
-/* =========================
-   FEATURES
-========================= */
-.features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-    padding: 60px 20px;
-}
-
-.card {
-    background: var(--panel);
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-}
-
-.card h3 {
-    color: var(--accent);
-}
-
-/* =========================
-   FORM SECTION
-========================= */
-.form-section {
-    text-align: center;
-    padding: 80px 20px;
-}
-
-form {
-    max-width: 420px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-input {
-    padding: 14px;
-    border-radius: 8px;
-    border: none;
-    outline: none;
-    background: var(--panel);
-    color: var(--text);
-}
-
-button.submit {
-    background: var(--accent);
-    border: none;
-    padding: 14px;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-/* =========================
-   COPILOT (AI PANEL)
-========================= */
-.copilot {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    width: 340px;
-    height: 450px;
-    background: var(--panel);
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--border);
-}
-
-.hidden {
-    display: none;
-}
-
-.copilot-header {
-    background: var(--panel-2);
-    color: var(--text);
-    padding: 12px;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-}
-
-.copilot-chat {
-    flex: 1;
-    padding: 10px;
-    overflow-y: auto;
-    font-size: 13px;
-}
-
-/* messages handled by JS classes */
-.msg {
-    margin: 8px 0;
-    padding: 10px;
-    border-radius: 10px;
-    max-width: 90%;
-}
-
-.msg.user {
-    background: rgba(255,255,255,0.1);
-    margin-left: auto;
-    text-align: right;
-}
-
-.msg.ai {
-    background: rgba(0,255,204,0.1);
-    margin-right: auto;
-}
-
-.copilot-input {
-    display: flex;
-    border-top: 1px solid var(--border);
-}
-
-.copilot-input input {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    outline: none;
-    background: var(--panel-2);
-    color: var(--text);
-}
-
-.copilot-input button {
-    background: var(--accent);
-    border: none;
-    padding: 12px 16px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-/* =========================
-   IMAGE SECTION
-========================= */
-.image-section {
-    text-align: center;
-    padding: 40px 20px;
-}
-
-.image-section img {
-    width: 70%;
-    max-width: 700px;
-    border-radius: 12px;
 }
 
 /* =========================
    FOOTER
 ========================= */
-.footer {
+
+footer {
     text-align: center;
-    padding: 40px;
-    color: var(--muted);
-    font-size: 13px;
+    padding: 30px;
+    margin-top: 40px;
+    background: white;
 }
 
 /* =========================
-   RESPONSIVE
+   MOBILE
 ========================= */
-@media (max-width: 768px) {
 
+@media (max-width: 900px) {
+    .hero-grid,
+    .feature-grid,
     .stats {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
     }
 
     .hero h1 {
-        font-size: 28px;
-    }
-
-    .copilot {
-        width: 90%;
-        right: 5%;
+        font-size: 38px;
     }
 }
