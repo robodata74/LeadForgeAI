@@ -3,25 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LeadForge AI - Revenue Intelligence Engine that analyzes leads in real-time">
 
     <title>LeadForge AI | Revenue Intelligence Engine</title>
 
-    <meta name="description"
-          content="AI-powered lead scoring engine that helps you identify high-converting customers instantly.">
+    <!-- FAVICON -->
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='styles.css') }}">
+    <!-- STYLES -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 
-    <link rel="icon"
-          href="{{ url_for('static', filename='images/favicon.png') }}">
-
-    <!-- ICON SYSTEM -->
+    <!-- FONT AWESOME -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        /* ================= CHARNYY STYLE SPACING SYSTEM ================= */
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, Helvetica, sans-serif;
+            background: #0b1220;
+            color: #e5e7eb;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Hero Section */
         .hero {
             padding: 90px 0;
         }
@@ -29,114 +46,282 @@
         .hero-grid {
             display: grid;
             grid-template-columns: 1.1fr 0.9fr;
-            gap: 60px;
+            gap: 50px;
             align-items: center;
         }
 
         h1 {
-            font-size: 52px;
-            line-height: 1.1;
-            margin-bottom: 18px;
-            letter-spacing: -0.5px;
+            font-size: 48px;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         p {
-            font-size: 17px;
+            color: #9ca3af;
+            font-size: 16px;
             line-height: 1.6;
-            color: #64748b;
         }
 
-        .section {
-            padding: 90px 0;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: auto;
-            width: 92%;
+        .badge {
+            display: inline-block;
+            background: #1e293b;
+            color: #3b82f6;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            margin-bottom: 16px;
         }
 
         .cta-row {
             display: flex;
-            gap: 14px;
-            margin-top: 24px;
+            gap: 12px;
+            margin-top: 22px;
             flex-wrap: wrap;
         }
 
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 22px;
-            margin-top: 40px;
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
         }
 
-        .feature-card {
-            background: white;
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #111827;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            border: 1px solid #1f2937;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #1f2937;
+            transform: translateY(-2px);
+        }
+
+        /* Lead Card */
+        .lead-card {
+            background: #111827;
             padding: 26px;
             border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            transition: 0.2s ease;
+            border: 1px solid #1f2937;
         }
 
-        .feature-card:hover {
-            transform: translateY(-4px);
-        }
-
-        .lead-card {
-            background: white;
-            padding: 26px;
-            border-radius: 18px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.06);
-        }
-
-        input {
+        input, textarea {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             margin-bottom: 12px;
             border-radius: 10px;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #374151;
+            background: #0f172a;
+            color: #e5e7eb;
+            font-size: 14px;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
         }
 
         button {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             border-radius: 10px;
             border: none;
             background: #2563eb;
             color: white;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
 
+        button:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        /* AI Demo Result Card */
+        .ai-demo-result {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            text-align: center;
+            border: 1px solid #1f2937;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .score-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        .score-hot { color: #ef4444; }
+        .score-warm { color: #f59e0b; }
+        .score-cold { color: #3b82f6; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: #111827;
+            padding: 28px;
+            border-radius: 16px;
+            border: 1px solid #1f2937;
+            transition: all 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            border-color: #3b82f6;
+        }
+
+        .feature-card i {
+            font-size: 32px;
+            color: #3b82f6;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 12px;
+        }
+
+        /* Pricing Section */
         .pricing {
+            padding: 80px 0;
             text-align: center;
         }
 
         .price-card {
-            margin-top: 30px;
-            background: white;
-            padding: 35px;
-            border-radius: 18px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.05);
-            display: inline-block;
-            width: 100%;
+            background: #111827;
+            border: 1px solid #1f2937;
+            padding: 40px;
+            border-radius: 20px;
             max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .price-card h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .price-card .price {
+            font-size: 48px;
+            color: #3b82f6;
+            margin: 20px 0;
         }
 
         ul {
             text-align: left;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            padding-left: 18px;
-            color: #475569;
+            padding-left: 20px;
+            color: #cbd5e1;
+            margin: 20px 0;
         }
 
+        ul li {
+            margin: 10px 0;
+        }
+
+        /* Footer */
         footer {
-            padding: 50px 0;
+            padding: 40px 0;
             text-align: center;
-            color: #64748b;
+            color: #9ca3af;
+            border-top: 1px solid #1f2937;
         }
 
+        /* Flash Messages */
+        .flash-messages {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .flash {
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .flash.success {
+            background: #064e3b;
+            color: #86efac;
+            border: 1px solid #059669;
+        }
+
+        .flash.error {
+            background: #7f1d1d;
+            color: #fca5a5;
+            border: 1px solid #dc2626;
+        }
+
+        .flash.info {
+            background: #1e3a8a;
+            color: #93c5fd;
+            border: 1px solid #3b82f6;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
         @media (max-width: 900px) {
             .hero-grid,
             .feature-grid {
@@ -144,230 +329,275 @@
             }
 
             h1 {
-                font-size: 36px;
+                font-size: 34px;
+            }
+
+            .hero {
+                padding: 50px 0;
             }
         }
-
-        /* ================= UX POLISH LAYER (ADDED ONLY) ================= */
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #eef6ff;
-            color: #2563eb;
-            padding: 8px 12px;
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 18px;
-        }
-
-        .feature-card h3 i {
-            margin-right: 6px;
-            color: #2563eb;
-        }
-
-        .price-card h3 i {
-            margin-right: 6px;
-            color: #2563eb;
-        }
-
-        ul li i {
-            margin-right: 6px;
-            color: #16a34a;
-        }
-
-        .cta-row a i {
-            margin-right: 6px;
-        }
-
     </style>
 </head>
 
 <body>
 
-<!-- ================= NAV ================= -->
-<header class="navbar">
-    <div class="container nav-flex">
-
-        <div class="logo">
-            <h2><i class="fa-solid fa-bolt"></i> LeadForge<span style="color:#2563eb;">AI</span></h2>
-        </div>
-
-        <nav>
-            <a href="#features"><i class="fa-solid fa-star"></i> Features</a>
-            <a href="#pricing"><i class="fa-solid fa-tag"></i> Pricing</a>
-            <a href="{{ url_for('login') }}"><i class="fa-solid fa-lock"></i> Dashboard</a>
-        </nav>
-
+<!-- Flash Messages -->
+{% if session.flashes %}
+<div class="flash-messages">
+    {% for flash in session.flashes %}
+    <div class="flash {{ flash.category }}">
+        <i class="fa-solid {% if flash.category == 'success' %}fa-check-circle{% elif flash.category == 'error' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %}"></i>
+        {{ flash.message }}
     </div>
-</header>
+    {% endfor %}
+    {% set _ = session.pop('flashes', None) %}
+</div>
+{% endif %}
 
-<!-- ================= HERO ================= -->
+<!-- Hero Section -->
 <section class="hero">
-
     <div class="container hero-grid">
-
-        <!-- LEFT -->
+        <!-- Left Column -->
         <div>
-
-            <!-- TONY HAYES STYLE TRUST BADGE -->
-            <div class="hero-badge">
-                <i class="fa-solid fa-sparkles"></i>
-                AI Revenue Intelligence System
+            <div class="badge">
+                <i class="fa-solid fa-sparkles"></i> AI Revenue Intelligence Engine
             </div>
 
             <h1>
-                <i class="fa-solid fa-chart-line"></i>
-                Stop Chasing Cold Leads.
-                Let AI Show You Who Will Actually Buy.
+                Stop Guessing. Start Closing High-Value Leads Instantly.
             </h1>
 
             <p>
-                LeadForge AI analyzes your prospects and instantly
-                identifies high-conversion opportunities so your
-                sales team focuses only on revenue-generating leads.
+                LeadForge AI analyzes your leads in real time and tells you exactly who is ready to buy,
+                who needs nurturing, and who is wasting your time.
             </p>
 
             <div class="cta-row">
-
-                <a href="#leadForm" class="btn-primary">
-                    <i class="fa-solid fa-rocket"></i> Start Free Analysis
+                {% if session.user_id %}
+                    <a href="{{ url_for('dashboard') }}" class="btn-primary">
+                        <i class="fa-solid fa-chart-line"></i> Go to Dashboard
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('login_page') }}" class="btn-primary">
+                        <i class="fa-solid fa-lock"></i> Login to Start
+                    </a>
+                {% endif %}
+                <a href="{{ url_for('upgrade') }}" class="btn-secondary">
+                    <i class="fa-solid fa-crown"></i> Upgrade to Pro
                 </a>
-
-                <a href="#features" class="btn-secondary">
-                    <i class="fa-solid fa-circle-info"></i> See How It Works
-                </a>
-
             </div>
-
         </div>
 
-        <!-- RIGHT -->
+        <!-- Right Column - AI Demo -->
         <div>
-
             <img src="{{ url_for('static', filename='images/leadforge-hero.png') }}"
-                 style="
-                    width:100%;
-                    border-radius:18px;
-                    box-shadow:0 20px 60px rgba(0,0,0,0.12);
-                    margin-bottom:20px;
-                 ">
+                 alt="LeadForge AI Dashboard Preview"
+                 style="width:100%;border-radius:16px;border:1px solid #1f2937;">
 
-            <div class="lead-card" id="leadForm">
-
-                <h3 style="margin-bottom:10px;">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    Analyze Your First Lead
+            <div class="lead-card" id="leadForm" style="margin-top:20px;">
+                <h3 style="margin-bottom:12px;">
+                    <i class="fa-solid fa-magnifying-glass"></i> Test AI Analysis
                 </h3>
 
-                <form action="{{ url_for('capture') }}" method="POST">
+                <input type="text" id="demoName" placeholder="Full Name" value="Demo User">
+                <input type="email" id="demoEmail" placeholder="Email Address" value="demo@example.com">
+                <textarea id="demoBusiness" rows="3" placeholder="Describe your business...">We are an enterprise B2B SaaS startup looking for investment to scale our AI platform.</textarea>
+                
+                <button onclick="testAIAnalysis()">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    Test AI Analysis
+                </button>
 
-                    <input type="text" name="name" placeholder="Full Name" required>
-                    <input type="email" name="email" placeholder="Email" required>
-                    <input type="text" name="business" placeholder="Business Type" required>
+                <!-- AI Demo Results -->
+                <div id="demoResult" style="display: none;">
+                    <div class="ai-demo-result">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <div id="scoreValue" class="score-value"></div>
+                        <div id="scoreLabel" style="font-size: 16px; font-weight: bold;"></div>
+                        <div id="scoreSignals" style="font-size: 11px; color: #6b7280; margin-top: 8px;"></div>
+                    </div>
+                </div>
 
-                    <button type="submit">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        Analyze Lead →
-                    </button>
-
-                </form>
-
+                <!-- Real Capture Form (hidden by default, shown after demo) -->
+                <div id="realCaptureForm" style="margin-top: 16px; border-top: 1px solid #1f2937; padding-top: 16px; display: none;">
+                    <h4 style="margin-bottom: 12px;"><i class="fa-solid fa-save"></i> Save This Lead</h4>
+                    <form action="{{ url_for('capture') }}" method="POST">
+                        <input type="hidden" name="name" id="captureName">
+                        <input type="hidden" name="email" id="captureEmail">
+                        <input type="hidden" name="business" id="captureBusiness">
+                        <button type="submit" style="background: #22c55e;">
+                            <i class="fa-solid fa-check-circle"></i> Save to Dashboard
+                        </button>
+                    </form>
+                </div>
             </div>
-
         </div>
-
     </div>
-
 </section>
 
-<!-- ================= FEATURES ================= -->
-<section class="section">
-
+<!-- Features Section -->
+<section class="features">
     <div class="container">
-
-        <h2 style="text-align:center; margin-bottom:10px;">
-            Why Teams Use LeadForge AI
-        </h2>
-
-        <p style="text-align:center;">
-            Clean intelligence. Faster decisions. Higher revenue.
+        <h2 style="text-align:center;">Why LeadForge AI Works</h2>
+        <p style="text-align:center;color:#9ca3af; margin-top: 8px;">
+            Built for speed, clarity, and conversion.
         </p>
 
         <div class="feature-grid">
-
             <div class="feature-card">
-                <h3><i class="fa-solid fa-bolt"></i> Smart Scoring</h3>
-                <p>HOT / WARM / COLD classification engine.</p>
+                <i class="fa-solid fa-bolt"></i>
+                <h3>Instant Scoring</h3>
+                <p>HOT / WARM / COLD classification in real time with intelligent signal detection.</p>
             </div>
 
             <div class="feature-card">
-                <h3><i class="fa-solid fa-bullseye"></i> Faster Sales</h3>
-                <p>Focus only on high-intent leads.</p>
+                <i class="fa-solid fa-bullseye"></i>
+                <h3>Focused Sales</h3>
+                <p>Eliminate wasted outreach and increase close rates by up to 40%.</p>
             </div>
 
             <div class="feature-card">
-                <h3><i class="fa-solid fa-coins"></i> Revenue Focus</h3>
-                <p>Eliminate wasted outreach time.</p>
+                <i class="fa-solid fa-chart-line"></i>
+                <h3>Revenue Insight</h3>
+                <p>Understand lead quality instantly with AI-powered analytics.</p>
             </div>
-
         </div>
-
     </div>
-
 </section>
 
-<!-- ================= PRICING ================= -->
-<section class="section pricing">
-
+<!-- Pricing Section -->
+<section class="pricing">
     <div class="container">
+        <h2>Simple, Transparent Pricing</h2>
+        <p style="margin-top: 8px;">Start free, upgrade when you're ready to scale</p>
 
-        <h2><i class="fa-solid fa-crown"></i> Simple Pricing</h2>
-
-        <p>One plan. Maximum intelligence.</p>
-
-        <div class="price-card">
-
-            <h3><i class="fa-solid fa-gem"></i> LeadForge Pro</h3>
-
-            <h2 style="margin:10px 0;">
-                <i class="fa-solid fa-dollar-sign"></i> 9.99
-                <span style="font-size:14px;">/mo</span>
-            </h2>
+        <div class="price-card" style="margin-top: 40px;">
+            <h3><i class="fa-solid fa-crown"></i> Pro Plan</h3>
+            <div class="price">$9.99 <span style="font-size: 16px;">/ month</span></div>
 
             <ul>
-                <li><i class="fa-solid fa-check"></i> AI Lead Scoring</li>
-                <li><i class="fa-solid fa-check"></i> Admin Dashboard</li>
-                <li><i class="fa-solid fa-check"></i> Lead Tracking</li>
-                <li><i class="fa-solid fa-check"></i> Copilot Assistant</li>
+                <li><i class="fa-solid fa-check-circle" style="color: #22c55e;"></i> AI Lead Scoring</li>
+                <li><i class="fa-solid fa-check-circle" style="color: #22c55e;"></i> Dashboard Access</li>
+                <li><i class="fa-solid fa-check-circle" style="color: #22c55e;"></i> Unlimited Lead Tracking</li>
+                <li><i class="fa-solid fa-check-circle" style="color: #22c55e;"></i> Analytics Engine</li>
+                <li><i class="fa-solid fa-check-circle" style="color: #22c55e;"></i> API Access</li>
             </ul>
 
-            <a href="{{ url_for('upgrade') }}" class="btn-primary">
-                <i class="fa-solid fa-arrow-up"></i> Upgrade Now
-            </a>
-
+            {% if session.user_id %}
+                <a href="{{ url_for('dashboard') }}" class="btn-primary" style="display: inline-block; margin-top: 20px;">
+                    Go to Dashboard →
+                </a>
+            {% else %}
+                <a href="{{ url_for('login_page') }}" class="btn-primary" style="display: inline-block; margin-top: 20px;">
+                    Login to Upgrade →
+                </a>
+            {% endif %}
         </div>
-
     </div>
-
 </section>
 
-<!-- ================= FOOTER ================= -->
+<!-- Footer -->
 <footer>
-
     <div class="container">
-
-        <h3><i class="fa-solid fa-bolt"></i> LeadForge AI</h3>
-
-        <p>Revenue intelligence for modern teams.</p>
-
-        <small>© 2026 LeadForge AI</small>
-
+        <h3 style="margin-bottom: 12px;">LeadForge AI</h3>
+        <p>Revenue Intelligence Engine for Modern Teams</p>
+        <small style="display: block; margin-top: 16px;">© 2026 LeadForge AI. All rights reserved.</small>
     </div>
-
 </footer>
+
+<script>
+    // AI Analysis Function - Intelligent scoring simulation
+    function testAIAnalysis() {
+        const name = document.getElementById('demoName').value;
+        const email = document.getElementById('demoEmail').value;
+        const business = document.getElementById('demoBusiness').value;
+        
+        if (!business.trim()) {
+            alert('Please describe your business');
+            return;
+        }
+        
+        // AI scoring engine (matches backend logic)
+        const text = business.toLowerCase();
+        let score = 40;
+        let signals = [];
+        
+        const keywords = {
+            'enterprise': 35, 'investment': 30, 'saas': 25, 'startup': 20,
+            'agency': 10, 'business': 10, 'b2b': 25, 'ecommerce': 15,
+            'marketing': 10, 'consulting': 10, 'ai': 20, 'machine learning': 20,
+            'blockchain': 15, 'cloud': 15, 'scale': 15, 'growth': 10,
+            'software': 15, 'platform': 10, 'automation': 15, 'data': 10
+        };
+        
+        for (const [keyword, weight] of Object.entries(keywords)) {
+            if (text.includes(keyword)) {
+                score += weight;
+                signals.push(keyword);
+            }
+        }
+        
+        score = Math.min(100, Math.max(0, score));
+        
+        let label, colorClass, icon;
+        if (score >= 75) {
+            label = 'HOT 🔥 High Priority';
+            colorClass = 'score-hot';
+            icon = '🔥';
+        } else if (score >= 55) {
+            label = 'WARM ⭐ Nurture';
+            colorClass = 'score-warm';
+            icon = '⭐';
+        } else {
+            label = 'COLD ❄️ Low Priority';
+            colorClass = 'score-cold';
+            icon = '❄️';
+        }
+        
+        // Display results
+        document.getElementById('scoreValue').innerHTML = `${score}%`;
+        document.getElementById('scoreValue').className = `score-value ${colorClass}`;
+        document.getElementById('scoreLabel').innerHTML = `${icon} ${label}`;
+        document.getElementById('scoreSignals').innerHTML = `🎯 Signals: ${signals.slice(0,5).join(', ') || 'general business'}`;
+        document.getElementById('demoResult').style.display = 'block';
+        
+        // Set up real capture form
+        document.getElementById('captureName').value = name;
+        document.getElementById('captureEmail').value = email;
+        document.getElementById('captureBusiness').value = business;
+        
+        {% if session.user_id %}
+            document.getElementById('realCaptureForm').style.display = 'block';
+        {% endif %}
+        
+        // Scroll to result
+        document.getElementById('demoResult').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    
+    // Auto-hide flash messages after 5 seconds
+    setTimeout(() => {
+        const flashes = document.querySelectorAll('.flash');
+        flashes.forEach(flash => {
+            flash.style.animation = 'slideOut 0.3s ease forwards';
+            setTimeout(() => {
+                if (flash.parentNode) flash.remove();
+            }, 300);
+        });
+    }, 5000);
+    
+    // Add slideOut keyframes if not present
+    if (!document.querySelector('#slideOutKeyframes')) {
+        const style = document.createElement('style');
+        style.id = 'slideOutKeyframes';
+        style.textContent = `
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+</script>
 
 </body>
 </html>

@@ -4,172 +4,241 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>LeadForgeAI Admin Login</title>
+    <title>LeadForge AI | Secure Login</title>
 
-    <link rel="icon" type="image/png"
-    href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
+        body {
+            background: #0b1220;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        body{
-            background:#0b1120;
-            font-family:Arial, sans-serif;
-            color:white;
-            min-height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            padding:40px;
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            background: #111827;
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid #1f2937;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
         }
 
-        .login-container{
-            width:100%;
-            max-width:500px;
-            background:#111827;
-            border:1px solid rgba(255,255,255,0.08);
-            border-radius:24px;
-            padding:60px;
-            box-shadow:
-            0 10px 40px rgba(0,0,0,.35);
+        .brand {
+            text-align: center;
+            margin-bottom: 24px;
         }
 
-        .logo{
-            font-size:38px;
-            font-weight:700;
-            margin-bottom:16px;
+        .brand h1 {
+            font-size: 22px;
+            color: #3b82f6;
+            margin: 0;
         }
 
-        .logo span{
-            color:#00d4aa;
+        .brand p {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-top: 6px;
         }
 
-        .subtitle{
-            color:#94a3b8;
-            font-size:16px;
-            line-height:1.7;
-            margin-bottom:40px;
+        label {
+            font-size: 13px;
+            margin-bottom: 6px;
+            display: block;
+            color: #cbd5e1;
         }
 
-        .form-group{
-            margin-bottom:24px;
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 14px;
+            border-radius: 10px;
+            border: 1px solid #374151;
+            background: #0f172a;
+            color: #e5e7eb;
+            outline: none;
+            box-sizing: border-box;
         }
 
-        label{
-            display:block;
-            margin-bottom:10px;
-            color:#cbd5e1;
-            font-size:14px;
+        input:focus {
+            border-color: #3b82f6;
         }
 
-        input{
-            width:100%;
-            padding:18px;
-            border-radius:14px;
-            border:1px solid #1f2937;
-            background:#0f172a;
-            color:white;
-            font-size:16px;
-            outline:none;
+        button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        input:focus{
-            border-color:#00d4aa;
+        button:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
         }
 
-        button{
-            width:100%;
-            padding:18px;
-            border:none;
-            border-radius:14px;
-            background:#00d4aa;
-            color:#07111f;
-            font-size:16px;
-            font-weight:700;
-            cursor:pointer;
-            transition:.25s ease;
+        .error {
+            background: #7f1d1d;
+            color: #fecaca;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            border-left: 3px solid #ef4444;
         }
 
-        button:hover{
-            transform:translateY(-2px);
+        .error i {
+            margin-right: 8px;
         }
 
-        .footer-text{
-            margin-top:28px;
-            text-align:center;
-            color:#64748b;
-            font-size:14px;
+        .note {
+            text-align: center;
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #1f2937;
         }
 
-        .flash-message{
-            background:#2b1f1f;
-            border:1px solid #ef4444;
-            color:#fecaca;
-            padding:14px;
-            border-radius:12px;
-            margin-bottom:25px;
+        .back-link {
+            display: inline-block;
+            margin-top: 12px;
+            color: #3b82f6;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Flash message styles */
+        .flash-messages {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .flash {
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .flash.error {
+            background: #7f1d1d;
+            color: #fca5a5;
+            border-left: 4px solid #ef4444;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<div class="login-container">
+<!-- Flash Messages -->
+{% if session.flashes %}
+<div class="flash-messages">
+    {% for flash in session.flashes %}
+    <div class="flash {{ flash.category }}">
+        <i class="fa-solid {% if flash.category == 'error' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %}"></i>
+        {{ flash.message }}
+    </div>
+    {% endfor %}
+    {% set _ = session.pop('flashes', None) %}
+</div>
+{% endif %}
 
-    <div class="logo">
-        LeadForge<span>AI</span>
+<div class="login-card">
+
+    <div class="brand">
+        <h1><i class="fa-solid fa-bolt"></i> LeadForge AI</h1>
+        <p>Secure Admin Access</p>
     </div>
 
-    <p class="subtitle">
-        Secure admin access to your lead intelligence dashboard.
-    </p>
-
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                <div class="flash-message">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-
-    <form method="POST">
-
-        <div class="form-group">
-            <label>Username</label>
-            <input
-                type="text"
-                name="username"
-                placeholder="Enter username"
-                required
-            >
+    {% if error %}
+        <div class="error">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            {{ error }}
         </div>
+    {% endif %}
 
-        <div class="form-group">
-            <label>Password</label>
-            <input
-                type="password"
-                name="password"
-                placeholder="Enter password"
-                required
-            >
-        </div>
+    <form method="POST" action="{{ url_for('login_submit') }}">
+
+        <label>Username</label>
+        <input type="text" name="username" required autofocus>
+
+        <label>Password</label>
+        <input type="password" name="password" required>
 
         <button type="submit">
-            Access Dashboard
+            <i class="fa-solid fa-right-to-bracket"></i> Login
         </button>
 
     </form>
 
-    <div class="footer-text">
-        LeadForgeAI • Intelligent Lead Conversion
+    <div class="note">
+        Admin login only
+        <br>
+        <a href="{{ url_for('home') }}" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Back to Home
+        </a>
     </div>
 
 </div>
+
+<script>
+    // Auto-hide flash messages after 5 seconds
+    setTimeout(() => {
+        const flashes = document.querySelectorAll('.flash');
+        flashes.forEach(flash => {
+            flash.style.animation = 'slideOut 0.3s ease forwards';
+            setTimeout(() => flash.remove(), 300);
+        });
+    }, 5000);
+
+    // Add slideOut animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
 
 </body>
 </html>

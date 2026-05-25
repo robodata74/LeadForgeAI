@@ -2,82 +2,326 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Upgrade to LeadForge PRO</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadForge AI | Upgrade to Pro</title>
+
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-        body{
-            font-family:Arial;
-            background:#0f172a;
-            color:white;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .card{
-            background:#111827;
-            padding:40px;
-            border-radius:20px;
-            width:420px;
-            text-align:center;
-            box-shadow:0 10px 40px rgba(0,0,0,0.4);
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #0b1220 0%, #0f172a 100%);
+            color: #e5e7eb;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
-        h1{
-            color:#22c55e;
-            margin-bottom:10px;
+        .paywall-container {
+            max-width: 500px;
+            width: 100%;
+            animation: fadeIn 0.5s ease;
         }
 
-        p{
-            color:#94a3b8;
-            margin-bottom:25px;
+        .paywall-card {
+            background: #111827;
+            border-radius: 24px;
+            padding: 40px;
+            border: 1px solid #1f2937;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        .price{
-            font-size:28px;
-            margin:20px 0;
+        .pro-badge {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 20px;
         }
 
-        .btn{
-            background:#2563eb;
-            padding:14px;
-            border-radius:10px;
-            color:white;
-            text-decoration:none;
-            display:inline-block;
-            margin-top:20px;
+        h1 {
+            font-size: 28px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h1 i {
+            color: #f59e0b;
+        }
+
+        .description {
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .price-box {
+            background: #0f172a;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 24px;
+            border: 1px solid #1f2937;
+        }
+
+        .price {
+            font-size: 48px;
+            font-weight: 800;
+            color: #f59e0b;
+        }
+
+        .price-period {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .features {
+            list-style: none;
+            margin: 24px 0;
+        }
+
+        .features li {
+            padding: 12px 0;
+            border-bottom: 1px solid #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .features li:last-child {
+            border-bottom: none;
+        }
+
+        .features i {
+            width: 24px;
+            color: #22c55e;
+        }
+
+        .paypal-section {
+            margin: 24px 0;
+            padding: 20px 0;
+            border-top: 1px solid #1f2937;
+            border-bottom: 1px solid #1f2937;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+        }
+
+        .fallback {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .btn-secondary {
+            background: #1f2937;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #374151;
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            background: #7f1d1d;
+            color: #fca5a5;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 16px 0;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .paywall-card {
+                padding: 24px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .price {
+                font-size: 36px;
+            }
         }
     </style>
 
-    <!-- PAYPAL SDK -->
-    <script src="https://www.paypal.com/sdk/js?client-id=BAAv0Ct7cUeb8hoVYp_ix_DRCsXlfExc-4_r8TX6wPXMSPiX517Zz1QbEthEVKOT_GqF3ZN7CNjk8dLP2I&components=hosted-buttons&currency=USD"></script>
+    <!-- PayPal SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=BAAv0Ct7cUeb8hoVYp_ix_DRCsXlfExc-4_r8TX6wPXMSPiX517Zz1QbEthEVKOT_GqF3ZN7CNjk8dLP2I&currency=USD&components=buttons"></script>
 </head>
 
 <body>
 
-<div class="card">
+<div class="paywall-container">
+    <div class="paywall-card">
+        <div class="pro-badge">
+            <i class="fa-solid fa-crown"></i> RECOMMENDED
+        </div>
 
-    <h1>Unlock LeadForge PRO 🚀</h1>
+        <h1>
+            <i class="fa-solid fa-gem"></i>
+            Unlock LeadForge Pro
+        </h1>
 
-    <p>Access AI Copilot, lead ranking & automation tools</p>
+        <div class="description">
+            Get full access to AI-powered lead scoring, real-time analytics, and all premium features.
+        </div>
 
-    <div class="price">$9.99 / month</div>
+        <div class="price-box">
+            <div class="price">$9.99</div>
+            <div class="price-period">per month, billed monthly</div>
+        </div>
 
-    <!-- PAYPAL BUTTON -->
-    <div id="paypal-container-L3FTPHM26TZHJ"></div>
+        <ul class="features">
+            <li><i class="fa-solid fa-check-circle"></i> <strong>AI Lead Scoring</strong> - Real-time HOT/WARM/COLD classification</li>
+            <li><i class="fa-solid fa-check-circle"></i> <strong>Analytics Dashboard</strong> - Visual insights and reporting</li>
+            <li><i class="fa-solid fa-check-circle"></i> <strong>Unlimited Leads</strong> - No caps on lead capture</li>
+            <li><i class="fa-solid fa-check-circle"></i> <strong>API Access</strong> - Integrate with your tools</li>
+            <li><i class="fa-solid fa-check-circle"></i> <strong>Priority Support</strong> - 24/7 fast response</li>
+        </ul>
 
-    <script>
-      paypal.HostedButtons({
-        hostedButtonId: "L3FTPHM26TZHJ",
-      }).render("#paypal-container-L3FTPHM26TZHJ");
-    </script>
+        <div class="paypal-section">
+            <div id="paypal-container"></div>
+            <div class="loading" id="loading">
+                <i class="fa-solid fa-spinner fa-spin"></i> Loading secure payment...
+            </div>
+        </div>
 
-    <a class="btn" href="/login">Admin Login</a>
-
+        <div class="fallback">
+            <a href="{{ url_for('dashboard') }}" class="btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Continue to Dashboard
+            </a>
+        </div>
+    </div>
 </div>
+
+<script>
+    // Initialize PayPal buttons
+    try {
+        if (typeof paypal !== "undefined" && paypal.Buttons) {
+            paypal.Buttons({
+                style: {
+                    layout: 'vertical',
+                    color: 'gold',
+                    shape: 'rect',
+                    label: 'paypal',
+                    height: 45
+                },
+
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            description: "LeadForge AI Pro Monthly Subscription",
+                            amount: {
+                                value: "9.99",
+                                currency_code: "USD",
+                                breakdown: {
+                                    item_total: {
+                                        value: "9.99",
+                                        currency_code: "USD"
+                                    }
+                                }
+                            },
+                            items: [{
+                                name: "LeadForge AI Pro Plan",
+                                description: "Monthly subscription for AI lead scoring",
+                                unit_amount: {
+                                    value: "9.99",
+                                    currency_code: "USD"
+                                },
+                                quantity: "1",
+                                category: "DIGITAL_GOODS"
+                            }]
+                        }],
+                        application_context: {
+                            shipping_preference: "NO_SHIPPING",
+                            user_action: "PAY_NOW"
+                        }
+                    });
+                },
+
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) {
+                        console.log("Payment approved:", details);
+                        
+                        // Send payment confirmation to server
+                        fetch('/api/payment-success', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                order_id: data.orderID,
+                                payer_email: details.payer.email_address,
+                                amount: "9.99"
+                            })
+                        }).then(response => response.json())
+                          .then(data => {
+                              if (data.success) {
+                                  window.location.href = "{{ url_for('payment_success') }}";
+                              } else {
+                                  alert("Payment recorded but verification pending. Contact support.");
+                              }
+                          }).catch(() => {
+                              window.location.href = "{{ url_for('payment_success') }}";
+                          });
+                    });
+                },
+
+                onError: function(err) {
+                    console.error("PayPal Error:", err);
+                    document.getElementById('loading').innerHTML = 
+                        '<div class="error-message"><i class="fa-solid fa-exclamation-triangle"></i> Payment system error. Please try again or contact support.</div>';
+                }
+
+            }).render("#paypal-container");
+            
+            document.getElementById("loading").style.display = "none";
+        } else {
+            throw new Error("PayPal SDK not loaded");
+        }
+    } catch (error) {
+        console.error("PayPal initialization failed:", error);
+        document.getElementById('loading').innerHTML = 
+            '<div class="error-message"><i class="fa-solid fa-exclamation-triangle"></i> Payment system temporarily unavailable. Please try again later.</div>';
+    }
+</script>
 
 </body>
 </html>

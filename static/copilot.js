@@ -2,10 +2,20 @@ let copilotInitialized = false;
 let isWaiting = false;
 
 // =========================
-// TOGGLE COPILOT PANEL
+// SAFE ELEMENT CHECK
+// =========================
+function getEl(id) {
+    return document.getElementById(id);
+}
+
+// =========================
+// TOGGLE COPILOT PANEL (SAFE)
 // =========================
 function toggleCopilot() {
-    const panel = document.getElementById("copilot-panel");
+    const panel = getEl("copilot-panel");
+
+    if (!panel) return;
+
     panel.classList.toggle("hidden");
 
     if (!panel.classList.contains("hidden")) {
@@ -14,15 +24,18 @@ function toggleCopilot() {
 }
 
 // =========================
-// INITIALIZE COPILOT
+// INIT COPILOT (SAFE MODE)
 // =========================
 function initCopilot() {
     if (copilotInitialized) return;
 
+    const chat = getEl("copilot-chat");
+    if (!chat) return;
+
     copilotInitialized = true;
 
     addMessage(
-        "Hi 👋 I'm LeadForge Copilot. I can analyze your leads, suggest actions, and guide your sales strategy.",
+        "Hi 👋 I'm LeadForge Copilot. I can help you analyze leads and improve sales.",
         "ai"
     );
 
@@ -30,10 +43,11 @@ function initCopilot() {
 }
 
 // =========================
-// ADD MESSAGE TO CHAT
+// ADD MESSAGE (SAFE)
 // =========================
 function addMessage(text, sender) {
-    const chat = document.getElementById("copilot-chat");
+    const chat = getEl("copilot-chat");
+    if (!chat) return;
 
     const msg = document.createElement("div");
     msg.className = sender === "user" ? "msg user" : "msg ai";
@@ -55,15 +69,18 @@ function addMessage(text, sender) {
 }
 
 // =========================
-// SEND MESSAGE
+// SEND MESSAGE (HARD SAFE)
 // =========================
 async function sendCopilot() {
 
     if (isWaiting) return;
 
-    const input = document.getElementById("copilot-input");
-    const text = input.value.trim();
+    const input = getEl("copilot-input");
+    const chat = getEl("copilot-chat");
 
+    if (!input || !chat) return;
+
+    const text = input.value.trim();
     if (!text) return;
 
     addMessage(text, "user");
@@ -75,83 +92,79 @@ async function sendCopilot() {
     try {
         const res = await fetch("/copilot", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify({ message: text })
         });
-
-        if (!res.ok) {
-            throw new Error("Server error: " + res.status);
-        }
 
         const data = await res.json();
 
         removeTypingIndicator();
-        addMessage(data.reply, "ai");
+        addMessage(data.reply || "No response", "ai");
 
     } catch (err) {
-        removeTypingIndicator();
-        addMessage(
-            "⚠️ Copilot error. Please check your connection or server.",
-            "ai"
-        );
         console.error(err);
+        removeTypingIndicator();
+        addMessage("⚠️ Copilot error (server issue).", "ai");
     }
 
     isWaiting = false;
 }
 
 // =========================
-// ENTER KEY SUPPORT
+// ENTER KEY SAFE
 // =========================
 document.addEventListener("DOMContentLoaded", function () {
-    const input = document.getElementById("copilot-input");
+    const input = getEl("copilot-input");
 
-    if (input) {
-        input.addEventListener("keydown", function (e) {
-            if (e.key === "Enter") {
-                sendCopilot();
-            }
-        });
-    }
+    if (!input) return;
+
+    input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+            sendCopilot();
+        }
+    });
 });
 
 // =========================
-// TYPING INDICATOR
+// TYPING INDICATOR SAFE
 // =========================
 function showTypingIndicator() {
-    const chat = document.getElementById("copilot-chat");
+    const chat = getEl("copilot-chat");
+    if (!chat) return;
 
     const typing = document.createElement("div");
     typing.id = "typing-indicator";
     typing.className = "msg ai";
-    typing.innerText = "Copilot is thinking...";
+    typing.innerText = "Thinking...";
 
     chat.appendChild(typing);
-    chat.scrollTop = chat.scrollHeight;
 }
 
 function removeTypingIndicator() {
-    const typing = document.getElementById("typing-indicator");
+    const typing = getEl("typing-indicator");
     if (typing) typing.remove();
 }
 
 // =========================
-// CHAT MEMORY (SESSION STORAGE)
+// CHAT MEMORY SAFE
 // =========================
 function saveChatHistory() {
-    const chat = document.getElementById("copilot-chat");
+    const chat = getEl("copilot-chat");
+    if (!chat) return;
 
-    sessionStorage.setItem("copilot_chat", chat.innerHTML);
+    try {
+        sessionStorage.setItem("copilot_chat", chat.innerHTML);
+    } catch (e) {}
 }
 
 function loadChatHistory() {
-    const chat = document.getElementById("copilot-chat");
+    const chat = getEl("copilot-chat");
+    if (!chat) return;
 
-    const saved = sessionStorage.getItem("copilot_chat");
-
-    if (saved) {
-        chat.innerHTML = saved;
-    }
+    try {
+        const saved = sessionStorage.getItem("copilot_chat");
+        if (saved) {
+            chat.innerHTML = saved;
+        }
+    } catch (e) {}
 }

@@ -1,131 +1,514 @@
 {% extends "base.html" %}
 
+{% block title %}LeadForge AI | Admin Dashboard{% endblock %}
+
+{% block extra_head %}
+<!-- Chart.js for beautiful graphs -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+    /* Additional dashboard-specific styles */
+    .progress-bar {
+        background: #1f2937;
+        border-radius: 10px;
+        overflow: hidden;
+        height: 8px;
+    }
+    .progress-fill {
+        background: linear-gradient(90deg, #3b82f6, #2563eb);
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.3s ease;
+    }
+    .badge-pro {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .badge-free {
+        background: #1f2937;
+        color: #9ca3af;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .insight-card {
+        background: #0f172a;
+        border-radius: 12px;
+        padding: 16px;
+        border-left: 3px solid #3b82f6;
+    }
+    .chart-container {
+        background: #0f172a;
+        padding: 20px;
+        border-radius: 16px;
+        border: 1px solid rgba(255,255,255,0.06);
+        margin-bottom: 20px;
+    }
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+    .warning-pulse {
+        animation: pulse 1.5s ease-in-out infinite;
+    }
+    .filter-input {
+        background: #0f172a;
+        border: 1px solid rgba(255,255,255,0.08);
+        color: white;
+        padding: 10px 14px;
+        border-radius: 12px;
+        outline: none;
+    }
+    .filter-input:focus {
+        border-color: #2563eb;
+    }
+    .filter-select {
+        background: #0f172a;
+        border: 1px solid rgba(255,255,255,0.08);
+        color: white;
+        padding: 10px 14px;
+        border-radius: 12px;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
 <div class="dashboard">
+    <div class="container">
 
-    <!-- ================= HEADER ================= -->
-    <div style="margin-bottom: 30px;">
-        <h1 style="font-size: 32px; font-weight: 800; color: #1e293b;">
-            LeadForge AI Dashboard
-        </h1>
-
-        <p style="color: #64748b; margin-top: 6px;">
-            Real-time lead intelligence & scoring system
-        </p>
-    </div>
-
-    <!-- ================= KPI CARDS ================= -->
-    <div class="stats-grid" style="display:grid; grid-template-columns: repeat(4, 1fr); gap:15px; margin-bottom:30px;">
-
-        <div class="card" style="background:white;padding:20px;border-radius:14px;box-shadow:0 6px 15px rgba(0,0,0,0.06);">
-            <h2 style="font-size:28px;">{{ stats.total }}</h2>
-            <p>Total Leads</p>
+        <!-- Dashboard Header -->
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fa-solid fa-chart-line" style="color: #3b82f6;"></i> 
+                LeadForge AI Dashboard
+            </h1>
+            <p class="page-subtitle">
+                Welcome back, <strong>{{ session.get('username', 'User') }}</strong>! 
+                Real-time lead intelligence — HOT / WARM / COLD classification
+            </p>
         </div>
 
-        <div class="card hot" style="background:white;padding:20px;border-radius:14px;border-left:4px solid #ef4444;">
-            <h2 style="font-size:28px;">{{ stats.hot }}</h2>
-            <p>HOT Leads</p>
+        <!-- Plan Badge & Usage (Free Tier Only) -->
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+            {% if current_plan == 'pro' %}
+                <span class="badge-pro"><i class="fa-solid fa-crown"></i> PRO PLAN - Unlimited</span>
+            {% else %}
+                <span class="badge-free"><i class="fa-solid fa-rocket"></i> FREE PLAN - {{ remaining }} leads left this month</span>
+            {% endif %}
         </div>
 
-        <div class="card warm" style="background:white;padding:20px;border-radius:14px;border-left:4px solid #f59e0b;">
-            <h2 style="font-size:28px;">{{ stats.warm }}</h2>
-            <p>WARM Leads</p>
+        {% if current_plan == 'free' %}
+        <div class="stat-card" style="margin-bottom: 30px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                <span><i class="fa-solid fa-chart-simple"></i> Monthly Usage</span>
+                <span>{{ lead_count }} / {{ lead_limit }} leads used</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ (lead_count / lead_limit * 100)|round }}%;"></div>
+            </div>
+            {% if remaining <= 10 %}
+            <div class="warning-pulse" style="margin-top: 12px; padding: 10px; background: #7f1d1d; border-radius: 8px; text-align: center;">
+                <i class="fa-solid fa-exclamation-triangle"></i> Only {{ remaining }} leads remaining this month! 
+                <a href="{{ url_for('upgrade') }}" style="color: #f59e0b;">Upgrade to Pro →</a>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- KPI Cards (using your design system) -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ stats.get('total', 0) }}</div>
+                <div class="stat-label"><i class="fa-solid fa-users"></i> Total Leads</div>
+            </div>
+            <div class="stat-card hot">
+                <div class="stat-number" style="color:#ef4444;">{{ stats.get('hot', 0) }}</div>
+                <div class="stat-label"><i class="fa-solid fa-fire"></i> HOT Leads</div>
+                {% if stats.get('total', 0) > 0 %}
+                <div style="font-size:12px; color:#94a3b8; margin-top:8px;">{{ ((stats.get('hot', 0) / stats.get('total', 1)) * 100)|round(1) }}% of total</div>
+                {% endif %}
+            </div>
+            <div class="stat-card warm">
+                <div class="stat-number" style="color:#f59e0b;">{{ stats.get('warm', 0) }}</div>
+                <div class="stat-label"><i class="fa-solid fa-temperature-high"></i> WARM Leads</div>
+            </div>
+            <div class="stat-card cold">
+                <div class="stat-number" style="color:#64748b;">{{ stats.get('cold', 0) }}</div>
+                <div class="stat-label"><i class="fa-solid fa-snowflake"></i> COLD Leads</div>
+            </div>
         </div>
 
-        <div class="card cold" style="background:white;padding:20px;border-radius:14px;border-left:4px solid #64748b;">
-            <h2 style="font-size:28px;">{{ stats.cold }}</h2>
-            <p>COLD Leads</p>
+        <!-- Charts Row (Only show if data exists) -->
+        {% if stats.get('total', 0) > 0 %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin-bottom: 30px;">
+            <!-- Lead Distribution Chart -->
+            <div class="chart-container">
+                <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-chart-pie"></i> Lead Distribution</h3>
+                <canvas id="leadDistributionChart" style="max-height: 250px;"></canvas>
+            </div>
+            
+            <!-- Conversion Funnel -->
+            <div class="chart-container">
+                <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-funnel-dollar"></i> Conversion Funnel</h3>
+                <canvas id="conversionFunnel" style="max-height: 250px;"></canvas>
+            </div>
         </div>
 
-    </div>
+        <!-- AI Insights Row -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px;">
+            <div class="insight-card">
+                <i class="fa-solid fa-lightbulb" style="color: #f59e0b; font-size: 20px;"></i>
+                <h4 style="margin: 8px 0;">AI Insight</h4>
+                <p style="font-size: 14px; color: #cbd5e1;">
+                    {% if stats.get('hot', 0) > stats.get('cold', 0) %}
+                        🎯 Great news! Your HOT leads outnumber COLD leads. Focus on closing these high-value opportunities.
+                    {% elif stats.get('cold', 0) > stats.get('hot', 0) * 2 %}
+                        📊 Tip: Try refining your lead sources. Consider targeting more specific business types.
+                    {% else %}
+                        💡 Balanced lead quality. Keep optimizing your lead capture forms for better targeting.
+                    {% endif %}
+                </p>
+            </div>
+            <div class="insight-card">
+                <i class="fa-solid fa-chart-line" style="color: #22c55e; font-size: 20px;"></i>
+                <h4 style="margin: 8px 0;">Opportunity Score</h4>
+                <p style="font-size: 14px; color: #cbd5e1;">
+                    {% set hot_value = stats.get('hot', 0) * 100 %}
+                    {% set warm_value = stats.get('warm', 0) * 50 %}
+                    {% set total_value = hot_value + warm_value %}
+                    Estimated pipeline value: <strong>${{ total_value }}+</strong>
+                    <br><small>Based on average deal size</small>
+                </p>
+            </div>
+            <div class="insight-card">
+                <i class="fa-solid fa-clock" style="color: #8b5cf6; font-size: 20px;"></i>
+                <h4 style="margin: 8px 0;">Recommendation</h4>
+                <p style="font-size: 14px; color: #cbd5e1;">
+                    {% if stats.get('warm', 0) > 0 %}
+                        📞 Contact {{ stats.get('warm', 0) }} warm leads this week.
+                    {% else %}
+                        🚀 Capture your first lead to see AI recommendations!
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        {% endif %}
 
-    <!-- ================= ACTION BAR ================= -->
-    <div style="display:flex; gap:10px; margin-bottom:20px;">
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 12px; margin-bottom: 30px; flex-wrap: wrap;">
+            <button onclick="toggleCaptureForm()" class="btn-primary" style="background: #22c55e;">
+                <i class="fa-solid fa-plus-circle"></i> New Lead
+            </button>
+            <button onclick="exportToCSV()" class="btn-secondary">
+                <i class="fa-solid fa-download"></i> Export CSV
+            </button>
+            <a href="{{ url_for('upgrade') }}" class="btn-secondary">
+                <i class="fa-solid fa-crown"></i> {% if current_plan == 'pro' %}Manage Subscription{% else %}Upgrade Plan{% endif %}
+            </a>
+            <a href="{{ url_for('home') }}" class="btn-secondary">
+                <i class="fa-solid fa-house"></i> Home
+            </a>
+            <a href="{{ url_for('logout') }}" class="btn-danger">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+        </div>
 
-        <a href="{{ url_for('logout') }}"
-           style="padding:10px 16px;background:#111827;color:white;border-radius:10px;text-decoration:none;">
-            Logout
-        </a>
+        <!-- Quick Capture Form (Hidden by default) -->
+        <div id="quickCaptureForm" style="display: none; background: #0f172a; border-radius: 22px; padding: 24px; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.06);">
+            <h3 style="margin-bottom: 16px;"><i class="fa-solid fa-magic"></i> Quick Lead Capture</h3>
+            <form action="{{ url_for('capture') }}" method="POST" style="display: grid; grid-template-columns: 1fr 1fr 2fr auto; gap: 12px;">
+                <input type="text" name="name" placeholder="Full Name" required class="input" style="padding: 12px;">
+                <input type="email" name="email" placeholder="Email" required class="input" style="padding: 12px;">
+                <input type="text" name="business" placeholder="Business Type / Description" required class="input" style="padding: 12px;">
+                <button type="submit" class="btn-primary" style="padding: 12px 20px;">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze
+                </button>
+            </form>
+        </div>
 
-        <a href="{{ url_for('home') }}"
-           style="padding:10px 16px;background:#2563eb;color:white;border-radius:10px;text-decoration:none;">
-            Home
-        </a>
+        <!-- Search and Filter Bar -->
+        <div style="margin-bottom: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="searchInput" placeholder="🔍 Search leads..." onkeyup="filterLeads()" class="filter-input" style="width: 250px;">
+                <select id="filterSelect" onchange="filterLeads()" class="filter-select">
+                    <option value="all">All Leads</option>
+                    <option value="HOT">🔥 HOT Only</option>
+                    <option value="WARM">⭐ WARM Only</option>
+                    <option value="COLD">❄️ COLD Only</option>
+                </select>
+            </div>
+            <div>
+                <span style="color: #94a3b8;"><i class="fa-solid fa-table"></i> {{ leads|length }} leads total</span>
+            </div>
+        </div>
 
-    </div>
-
-    <!-- ================= LEADS TABLE ================= -->
-    <div style="overflow-x:auto;">
-
-        <table style="width:100%;background:white;border-radius:12px;overflow:hidden;box-shadow:0 8px 18px rgba(0,0,0,0.05);">
-
-            <thead style="background:#f1f5f9;">
-                <tr>
-                    <th style="padding:12px;text-align:left;">ID</th>
-                    <th style="padding:12px;text-align:left;">Name</th>
-                    <th style="padding:12px;text-align:left;">Email</th>
-                    <th style="padding:12px;text-align:left;">Business</th>
-                    <th style="padding:12px;text-align:left;">Score</th>
-                    <th style="padding:12px;text-align:left;">Status</th>
-                    <th style="padding:12px;text-align:left;">Action</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                {% for lead in leads %}
-                <tr style="border-bottom:1px solid #f1f5f9;">
-
-                    <td style="padding:12px;">{{ lead["id"] }}</td>
-                    <td style="padding:12px;">{{ lead["name"] }}</td>
-                    <td style="padding:12px;">{{ lead["email"] }}</td>
-                    <td style="padding:12px;">{{ lead["business"] }}</td>
-
-                    <!-- SCORE BADGE -->
-                    <td style="padding:12px;">
-                        <span style="
-                            padding:6px 10px;
-                            border-radius:8px;
-                            font-size:12px;
-                            background:
-                                {% if lead['score'] == 'HOT' %}#fee2e2
-                                {% elif lead['score'] == 'WARM' %}#fef3c7
-                                {% else %}#e2e8f0{% endif %};
-                        ">
-                            {{ lead["score"] }}
-                        </span>
-                    </td>
-
-                    <!-- PAYMENT STATUS -->
-                    <td style="padding:12px;">
-                        {% if lead["is_paid"] == 1 %}
-                            <span style="color:#16a34a;font-weight:600;">Paid</span>
+        <!-- Leads Table -->
+        <div class="table-container">
+            <div class="table-card">
+                <table id="leadsTable">
+                    <thead>
+                        <tr>
+                            <th style="cursor: pointer;" onclick="sortTable(0)">Name ↕</th>
+                            <th style="cursor: pointer;" onclick="sortTable(1)">Email ↕</th>
+                            <th>Business</th>
+                            <th style="cursor: pointer;" onclick="sortTable(3)">Score ↕</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if leads and leads|length > 0 %}
+                            {% for lead in leads %}
+                            <tr class="lead-row" data-label="{{ lead.get('label', 'COLD') }}">
+                                <td><i class="fa-solid fa-user"></i> {{ lead.get('name') }}</td>
+                                <td><i class="fa-solid fa-envelope"></i> {{ lead.get('email') }}</td>
+                                <td>{{ lead.get('business')[:50] }}{% if lead.get('business')|length > 50 %}...{% endif %}</td>
+                                <td>
+                                    {% set label = lead.get('label', 'COLD') %}
+                                    <span class="badge {% if label == 'HOT' %}badge-hot{% elif label == 'WARM' %}badge-warm{% else %}badge-cold{% endif %}">
+                                        {{ label }} ({{ lead.get('score', 0) }})
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if lead.get('is_paid', 0) == 1 %}
+                                        <span class="badge-paid"><i class="fa-solid fa-check-circle"></i> Pro</span>
+                                    {% else %}
+                                        <span class="badge-unpaid"><i class="fa-solid fa-clock"></i> Free</span>
+                                    {% endif %}
+                                </td>
+                                <td style="font-size: 12px;">{{ lead.get('created_at', '')[:10] }}</td>
+                                <td>
+                                    <a href="{{ url_for('delete', lead_id=lead.get('id')) }}"
+                                       onclick="return confirm('Are you sure you want to delete this lead?')"
+                                       style="color:#ef4444; text-decoration:none;">
+                                        <i class="fa-solid fa-trash"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
                         {% else %}
-                            <span style="color:#dc2626;font-weight:600;">Unpaid</span>
+                            <tr>
+                                <td colspan="7" style="padding: 60px; text-align: center; color: #94a3b8;">
+                                    <i class="fa-solid fa-inbox" style="font-size: 48px; margin-bottom: 16px; display: block;"></i>
+                                    No leads captured yet.
+                                    <br>
+                                    <a href="{{ url_for('home') }}" style="color: #3b82f6; margin-top: 12px; display: inline-block;">
+                                        Go to homepage to capture your first lead →
+                                    </a>
+                                </td>
+                            </tr>
                         {% endif %}
-                    </td>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                    <!-- ACTION -->
-                    <td style="padding:12px;">
-
-                        <!-- DELETE (SAFE ROUTE REQUIRED IN BACKEND) -->
-                        <a href="{{ url_for('delete', lead_id=lead['id']) }}"
-                           style="color:#dc2626;text-decoration:none;font-weight:600;">
-                            Delete
-                        </a>
-
-                    </td>
-
-                </tr>
-                {% endfor %}
-
-            </tbody>
-
-        </table>
+        <!-- Lead Analytics Summary -->
+        {% if stats.get('total', 0) > 0 %}
+        <div style="margin-top: 30px; padding: 20px; background: #0f172a; border-radius: 22px; border: 1px solid rgba(255,255,255,0.06);">
+            <h3 style="margin-bottom: 16px;"><i class="fa-solid fa-chart-simple"></i> Quick Analytics</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px;">
+                <div>
+                    <p style="color: #94a3b8; font-size: 12px;">Conversion Rate (HOT)</p>
+                    <p style="font-size: 20px; font-weight: bold;">
+                        {% if stats.get('total', 0) > 0 %}
+                            {{ ((stats.get('hot', 0) / stats.get('total', 1)) * 100)|round(1) }}%
+                        {% else %}0%{% endif %}
+                    </p>
+                </div>
+                <div>
+                    <p style="color: #94a3b8; font-size: 12px;">Needs Nurturing (WARM)</p>
+                    <p style="font-size: 20px; font-weight: bold;">
+                        {% if stats.get('total', 0) > 0 %}
+                            {{ ((stats.get('warm', 0) / stats.get('total', 1)) * 100)|round(1) }}%
+                        {% else %}0%{% endif %}
+                    </p>
+                </div>
+                <div>
+                    <p style="color: #94a3b8; font-size: 12px;">Low Priority (COLD)</p>
+                    <p style="font-size: 20px; font-weight: bold;">
+                        {% if stats.get('total', 0) > 0 %}
+                            {{ ((stats.get('cold', 0) / stats.get('total', 1)) * 100)|round(1) }}%
+                        {% else %}0%{% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
 
     </div>
-
 </div>
+
+<script>
+    // Initialize Charts
+    function initCharts() {
+        const hot = {{ stats.get('hot', 0) }};
+        const warm = {{ stats.get('warm', 0) }};
+        const cold = {{ stats.get('cold', 0) }};
+        const total = hot + warm + cold;
+        
+        if (total === 0) return;
+        
+        // Lead Distribution Pie Chart
+        const ctx1 = document.getElementById('leadDistributionChart');
+        if (ctx1) {
+            new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['HOT Leads', 'WARM Leads', 'COLD Leads'],
+                    datasets: [{
+                        data: [hot, warm, cold],
+                        backgroundColor: ['#ef4444', '#f59e0b', '#3b82f6'],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#e5e7eb' }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Conversion Funnel
+        const ctx2 = document.getElementById('conversionFunnel');
+        if (ctx2) {
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['Total Leads', 'WARM (Nurture)', 'HOT (Ready)'],
+                    datasets: [{
+                        label: 'Lead Count',
+                        data: [total, warm, hot],
+                        backgroundColor: ['#3b82f6', '#f59e0b', '#ef4444'],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#1f2937' },
+                            ticks: { color: '#e5e7eb' }
+                        },
+                        x: {
+                            ticks: { color: '#e5e7eb' }
+                        }
+                    }
+                }
+            });
+        }
+    }
+    
+    // Toggle Quick Capture Form
+    function toggleCaptureForm() {
+        const form = document.getElementById('quickCaptureForm');
+        if (form.style.display === 'none' || form.style.display === '') {
+            form.style.display = 'block';
+        } else {
+            form.style.display = 'none';
+        }
+    }
+    
+    // Export to CSV
+    function exportToCSV() {
+        const rows = document.querySelectorAll('#leadsTable tbody tr');
+        const leadRows = Array.from(rows).filter(row => !row.innerText.includes('No leads'));
+        
+        if (leadRows.length === 0) {
+            alert('No data to export');
+            return;
+        }
+        
+        let csv = 'Name,Email,Business,Score,Status,Date\n';
+        leadRows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length >= 6) {
+                const name = cells[0].innerText.replace(/[^a-zA-Z0-9\s]/g, '').trim();
+                const email = cells[1].innerText;
+                const business = cells[2].innerText.replace(/,/g, ';');
+                const score = cells[3].innerText;
+                const status = cells[4].innerText;
+                const date = cells[5].innerText;
+                csv += `"${name}","${email}","${business}","${score}","${status}","${date}"\n`;
+            }
+        });
+        
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `leads_export_${new Date().toISOString().slice(0,19)}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+    
+    // Filter Leads
+    function filterLeads() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const filterValue = document.getElementById('filterSelect').value;
+        const rows = document.querySelectorAll('#leadsTable tbody .lead-row');
+        
+        rows.forEach(row => {
+            const name = row.cells[0]?.innerText.toLowerCase() || '';
+            const email = row.cells[1]?.innerText.toLowerCase() || '';
+            const business = row.cells[2]?.innerText.toLowerCase() || '';
+            const label = row.getAttribute('data-label') || '';
+            
+            const matchesSearch = name.includes(searchTerm) || email.includes(searchTerm) || business.includes(searchTerm);
+            const matchesFilter = filterValue === 'all' || label === filterValue;
+            
+            row.style.display = matchesSearch && matchesFilter ? '' : 'none';
+        });
+    }
+    
+    // Sort Table
+    let sortDirection = {};
+    function sortTable(columnIndex) {
+        const table = document.getElementById('leadsTable');
+        const tbody = table.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('.lead-row'));
+        
+        sortDirection[columnIndex] = !sortDirection[columnIndex];
+        const direction = sortDirection[columnIndex] ? 1 : -1;
+        
+        rows.sort((a, b) => {
+            let aVal = a.cells[columnIndex]?.innerText.toLowerCase() || '';
+            let bVal = b.cells[columnIndex]?.innerText.toLowerCase() || '';
+            
+            // Numeric sort for score column (index 3)
+            if (columnIndex === 3) {
+                aVal = parseInt(aVal.match(/\d+/)?.[0] || 0);
+                bVal = parseInt(bVal.match(/\d+/)?.[0] || 0);
+                return (aVal - bVal) * direction;
+            }
+            
+            return aVal.localeCompare(bVal) * direction;
+        });
+        
+        rows.forEach(row => tbody.appendChild(row));
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', initCharts);
+</script>
 
 {% endblock %}

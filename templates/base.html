@@ -2,48 +2,313 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>LeadForge AI</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LeadForge AI - SaaS Intelligence Engine for lead scoring and revenue optimization">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>{% block title %}LeadForge AI | SaaS Engine{% endblock %}</title>
 
-    <!-- ✅ FAVICON FIX -->
+    <!-- FAVICON -->
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
 
-    <meta name="description" content="LeadForge AI SaaS Lead Engine">
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #0b1220;
+            color: #e5e7eb;
+        }
+
+        /* Top Bar Navigation */
+        .topbar {
+            background: #111827;
+            border-bottom: 1px solid #1f2937;
+            padding: 14px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .wrap {
+            width: 92%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .brand {
+            font-weight: 800;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .brand i {
+            color: #3b82f6;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #cbd5e1;
+            font-size: 14px;
+            transition: color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        nav a:hover {
+            color: #ffffff;
+            background: #1f2937;
+        }
+
+        nav a.active {
+            color: #3b82f6;
+            background: #1e3a8a;
+        }
+
+        /* Content Area */
+        .content {
+            min-height: 80vh;
+            background: #0f172a;
+            padding: 30px 0;
+        }
+
+        /* Footer */
+        footer {
+            background: #111827;
+            color: #9ca3af;
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid #1f2937;
+        }
+
+        footer h3 {
+            margin-bottom: 12px;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #1f2937;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #374151;
+        }
+
+        .btn-gold {
+            background: #f59e0b;
+            color: #111827;
+        }
+
+        .btn-gold:hover {
+            background: #d97706;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        /* Flash Messages */
+        .flash-messages {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .flash {
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .flash.success {
+            background: #064e3b;
+            color: #86efac;
+            border-left: 4px solid #22c55e;
+        }
+
+        .flash.error {
+            background: #7f1d1d;
+            color: #fca5a5;
+            border-left: 4px solid #ef4444;
+        }
+
+        .flash.info {
+            background: #1e3a8a;
+            color: #93c5fd;
+            border-left: 4px solid #3b82f6;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .wrap {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav {
+                justify-content: center;
+            }
+        }
+    </style>
+
+    {% block extra_head %}{% endblock %}
 </head>
 
 <body>
 
-<div class="navbar">
-    <div class="nav-flex">
+<!-- Flash Messages -->
+{% if session.flashes %}
+<div class="flash-messages">
+    {% for flash in session.flashes %}
+    <div class="flash {{ flash.category }}">
+        <i class="fa-solid {% if flash.category == 'success' %}fa-check-circle{% elif flash.category == 'error' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %}"></i>
+        {{ flash.message }}
+    </div>
+    {% endfor %}
+    {% set _ = session.pop('flashes', None) %}
+</div>
+{% endif %}
 
-        <div class="nav-left">
-            <span class="logo">LeadForge<span style="color:#2563eb;">AI</span></span>
-
-            <a href="{{ url_for('home') }}">Home</a>
-            <a href="{{ url_for('admin') }}">Dashboard</a>
-            <a href="{{ url_for('upgrade') }}">Upgrade</a>
-            <a href="{{ url_for('logout') }}">Logout</a>
+<!-- Top Navigation Bar -->
+<header class="topbar">
+    <div class="wrap">
+        <div class="brand">
+            <i class="fa-solid fa-bolt"></i>
+            <a href="{{ url_for('home') }}">LeadForge AI</a>
         </div>
 
+        <nav>
+            <a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active{% endif %}">
+                <i class="fa-solid fa-house"></i> Home
+            </a>
+            
+            {% if session.user_id %}
+                <a href="{{ url_for('dashboard') }}" class="{% if request.endpoint == 'dashboard' %}active{% endif %}">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard
+                </a>
+                <a href="{{ url_for('upgrade') }}">
+                    <i class="fa-solid fa-crown"></i> Upgrade
+                </a>
+                <a href="{{ url_for('logout') }}">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </a>
+            {% else %}
+                <a href="{{ url_for('login_page') }}">
+                    <i class="fa-solid fa-lock"></i> Login
+                </a>
+                <a href="{{ url_for('upgrade') }}">
+                    <i class="fa-solid fa-crown"></i> Pro
+                </a>
+            {% endif %}
+        </nav>
     </div>
-</div>
+</header>
 
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <div class="flash-container">
-        {% for message in messages %}
-            <div class="flash">{{ message }}</div>
-        {% endfor %}
-    </div>
-  {% endif %}
-{% endwith %}
-
-<div class="container">
+<!-- Main Content Area -->
+<div class="content">
     {% block content %}{% endblock %}
 </div>
+
+<!-- Footer -->
+<footer>
+    <h3><i class="fa-solid fa-bolt"></i> LeadForge AI</h3>
+    <p style="margin: 8px 0;">Revenue Intelligence Engine for Modern Teams</p>
+    <small>© 2026 LeadForge AI — SaaS Intelligence Engine v5.0</small>
+</footer>
+
+<!-- Scripts Block -->
+{% block scripts %}
+<script>
+    // Auto-hide flash messages after 5 seconds
+    setTimeout(() => {
+        const flashes = document.querySelectorAll('.flash');
+        flashes.forEach(flash => {
+            flash.style.animation = 'slideOut 0.3s ease forwards';
+            setTimeout(() => flash.remove(), 300);
+        });
+    }, 5000);
+</script>
+{% endblock %}
 
 </body>
 </html>

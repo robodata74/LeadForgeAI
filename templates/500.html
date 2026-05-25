@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Error | LeadForge AI</title>
+
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #0b1220 0%, #0f172a 100%);
+            color: #e5e7eb;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .error-container {
+            max-width: 600px;
+            width: 100%;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .error-card {
+            background: #111827;
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            border: 1px solid #1f2937;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .error-code {
+            font-size: 120px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+
+        .error-icon {
+            font-size: 80px;
+            color: #ef4444;
+            margin-bottom: 24px;
+            display: inline-block;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 16px;
+            color: #e5e7eb;
+        }
+
+        .message {
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 32px;
+            font-size: 16px;
+        }
+
+        .error-details {
+            background: #0f172a;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 24px 0;
+            text-align: left;
+        }
+
+        .error-details h3 {
+            color: #f59e0b;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .error-details p {
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .action-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 3px solid #ef4444;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .action-box p {
+            color: #fca5a5;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #1f2937;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #374151;
+            transform: translateY(-2px);
+        }
+
+        .btn-retry {
+            background: #dc2626;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-retry:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            10%, 30%, 50%, 70%, 90% {
+                transform: translateX(-5px);
+            }
+            20%, 40%, 60%, 80% {
+                transform: translateX(5px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .error-card {
+                padding: 30px 20px;
+            }
+            
+            .error-code {
+                font-size: 80px;
+            }
+            
+            .error-icon {
+                font-size: 60px;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn-primary, .btn-secondary, .btn-retry {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="error-container">
+    <div class="error-card">
+        <div class="error-icon">
+            <i class="fa-solid fa-wrench"></i>
+        </div>
+        
+        <div class="error-code">500</div>
+        
+        <h1>Internal Server Error</h1>
+        
+        <div class="message">
+            Something went wrong on our end. Our engineering team has been notified and is working to fix the issue.
+            Please try again in a few minutes.
+        </div>
+
+        <div class="error-details">
+            <h3><i class="fa-solid fa-info-circle"></i> What happened?</h3>
+            <p>
+                The server encountered an unexpected condition that prevented it from fulfilling your request.
+                This is usually a temporary issue that resolves itself quickly.
+            </p>
+        </div>
+
+        <div class="action-box">
+            <p><i class="fa-solid fa-clock"></i> What you can do:</p>
+            <ul style="margin-left: 20px; color: #fca5a5;">
+                <li>Wait a few minutes and try again</li>
+                <li>Clear your browser cache</li>
+                <li>Contact support if the problem persists</li>
+            </ul>
+        </div>
+
+        <div class="button-group">
+            <button onclick="location.reload()" class="btn-retry">
+                <i class="fa-solid fa-rotate-right"></i> Try Again
+            </button>
+            <a href="{{ url_for('home') }}" class="btn-primary">
+                <i class="fa-solid fa-house"></i> Return Home
+            </a>
+            {% if session.user_id %}
+                <a href="{{ url_for('dashboard') }}" class="btn-secondary">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard
+                </a>
+            {% endif %}
+        </div>
+
+        <div style="margin-top: 24px; font-size: 12px; color: #64748b;">
+            <i class="fa-solid fa-envelope"></i> Need help? 
+            <a href="mailto:support@leadforge.ai" style="color: #3b82f6; text-decoration: none;">Contact Support</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Log error reference ID for tracking
+    const errorId = 'ERR_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    // Log to console for debugging
+    console.error('Error ID:', errorId);
+    
+    // Optionally send error report to server
+    if (typeof fetch !== 'undefined') {
+        fetch('/api/log-error', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                error_id: errorId,
+                path: window.location.pathname,
+                timestamp: new Date().toISOString(),
+                user_agent: navigator.userAgent
+            })
+        }).catch(() => {}); // Silent fail
+    }
+    
+    // Add error ID to page for support reference
+    const errorCard = document.querySelector('.error-card');
+    if (errorCard) {
+        const refElement = document.createElement('div');
+        refElement.style.cssText = 'margin-top: 16px; font-size: 10px; color: #4a5568;';
+        refElement.innerHTML = `<i class="fa-solid fa-barcode"></i> Reference: ${errorId}`;
+        errorCard.appendChild(refElement);
+    }
+</script>
+
+</body>
+</html>
