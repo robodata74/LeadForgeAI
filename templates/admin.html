@@ -4,69 +4,127 @@
 
 <div class="dashboard">
 
-    <h1>LeadForge AI Dashboard</h1>
+    <!-- ================= HEADER ================= -->
+    <div style="margin-bottom: 30px;">
+        <h1 style="font-size: 32px; font-weight: 800; color: #1e293b;">
+            LeadForge AI Dashboard
+        </h1>
 
-    <!-- KPI CARDS -->
-    <div class="stats-grid">
+        <p style="color: #64748b; margin-top: 6px;">
+            Real-time lead intelligence & scoring system
+        </p>
+    </div>
 
-        <div class="card">
-            <h2>{{ stats.total }}</h2>
+    <!-- ================= KPI CARDS ================= -->
+    <div class="stats-grid" style="display:grid; grid-template-columns: repeat(4, 1fr); gap:15px; margin-bottom:30px;">
+
+        <div class="card" style="background:white;padding:20px;border-radius:14px;box-shadow:0 6px 15px rgba(0,0,0,0.06);">
+            <h2 style="font-size:28px;">{{ stats.total }}</h2>
             <p>Total Leads</p>
         </div>
 
-        <div class="card hot">
-            <h2>{{ stats.hot }}</h2>
+        <div class="card hot" style="background:white;padding:20px;border-radius:14px;border-left:4px solid #ef4444;">
+            <h2 style="font-size:28px;">{{ stats.hot }}</h2>
             <p>HOT Leads</p>
         </div>
 
-        <div class="card warm">
-            <h2>{{ stats.warm }}</h2>
+        <div class="card warm" style="background:white;padding:20px;border-radius:14px;border-left:4px solid #f59e0b;">
+            <h2 style="font-size:28px;">{{ stats.warm }}</h2>
             <p>WARM Leads</p>
         </div>
 
-        <div class="card cold">
-            <h2>{{ stats.cold }}</h2>
+        <div class="card cold" style="background:white;padding:20px;border-radius:14px;border-left:4px solid #64748b;">
+            <h2 style="font-size:28px;">{{ stats.cold }}</h2>
             <p>COLD Leads</p>
         </div>
 
     </div>
 
-    <!-- ACTION BAR -->
-    <div class="action-bar">
-        <a href="/export" class="btn">Export CSV</a>
-        <a href="/logout" class="btn danger">Logout</a>
+    <!-- ================= ACTION BAR ================= -->
+    <div style="display:flex; gap:10px; margin-bottom:20px;">
+
+        <a href="{{ url_for('logout') }}"
+           style="padding:10px 16px;background:#111827;color:white;border-radius:10px;text-decoration:none;">
+            Logout
+        </a>
+
+        <a href="{{ url_for('home') }}"
+           style="padding:10px 16px;background:#2563eb;color:white;border-radius:10px;text-decoration:none;">
+            Home
+        </a>
+
     </div>
 
-    <!-- LEADS TABLE -->
-    <h2>Lead Pipeline</h2>
+    <!-- ================= LEADS TABLE ================= -->
+    <div style="overflow-x:auto;">
 
-    <table class="table">
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Business</th>
-            <th>Score</th>
-            <th>Action</th>
-        </tr>
+        <table style="width:100%;background:white;border-radius:12px;overflow:hidden;box-shadow:0 8px 18px rgba(0,0,0,0.05);">
 
-        {% for lead in leads %}
-        <tr>
-            <td>{{ lead["id"] }}</td>
-            <td>{{ lead["name"] }}</td>
-            <td>{{ lead["email"] }}</td>
-            <td>{{ lead["business"] }}</td>
-            <td>
-                <span class="badge {{ lead['score'] }}">
-                    {{ lead["score"] }}
-                </span>
-            </td>
-            <td>
-                <a href="/delete/{{ lead['id'] }}" class="delete">Delete</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+            <thead style="background:#f1f5f9;">
+                <tr>
+                    <th style="padding:12px;text-align:left;">ID</th>
+                    <th style="padding:12px;text-align:left;">Name</th>
+                    <th style="padding:12px;text-align:left;">Email</th>
+                    <th style="padding:12px;text-align:left;">Business</th>
+                    <th style="padding:12px;text-align:left;">Score</th>
+                    <th style="padding:12px;text-align:left;">Status</th>
+                    <th style="padding:12px;text-align:left;">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for lead in leads %}
+                <tr style="border-bottom:1px solid #f1f5f9;">
+
+                    <td style="padding:12px;">{{ lead["id"] }}</td>
+                    <td style="padding:12px;">{{ lead["name"] }}</td>
+                    <td style="padding:12px;">{{ lead["email"] }}</td>
+                    <td style="padding:12px;">{{ lead["business"] }}</td>
+
+                    <!-- SCORE BADGE -->
+                    <td style="padding:12px;">
+                        <span style="
+                            padding:6px 10px;
+                            border-radius:8px;
+                            font-size:12px;
+                            background:
+                                {% if lead['score'] == 'HOT' %}#fee2e2
+                                {% elif lead['score'] == 'WARM' %}#fef3c7
+                                {% else %}#e2e8f0{% endif %};
+                        ">
+                            {{ lead["score"] }}
+                        </span>
+                    </td>
+
+                    <!-- PAYMENT STATUS -->
+                    <td style="padding:12px;">
+                        {% if lead["is_paid"] == 1 %}
+                            <span style="color:#16a34a;font-weight:600;">Paid</span>
+                        {% else %}
+                            <span style="color:#dc2626;font-weight:600;">Unpaid</span>
+                        {% endif %}
+                    </td>
+
+                    <!-- ACTION -->
+                    <td style="padding:12px;">
+
+                        <!-- DELETE (SAFE ROUTE REQUIRED IN BACKEND) -->
+                        <a href="{{ url_for('delete', lead_id=lead['id']) }}"
+                           style="color:#dc2626;text-decoration:none;font-weight:600;">
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 

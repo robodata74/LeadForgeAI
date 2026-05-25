@@ -4,58 +4,103 @@
     <meta charset="UTF-8">
     <title>Upgrade to LeadForge Pro</title>
 
-    <!-- PAYPAL SDK (Part 1 - MUST BE IN HEAD ONCE) -->
-    <script 
-      src="https://www.paypal.com/sdk/js?client-id=BAAv0Ct7cUeb8hoVYp_ix_DRCsXlfExc-4_r8TX6wPXMSPiX517Zz1QbEthEVKOT_GqF3ZN7CNjk8dLP2I&components=hosted-buttons&disable-funding=venmo&currency=USD">
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <!-- PayPal SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=BAAv0Ct7cUeb8hoVYp_ix_DRCsXlfExc-4_r8TX6wPXMSPiX517Zz1QbEthEVKOT_GqF3ZN7CNjk8dLP2I&components=hosted-buttons&currency=USD"></script>
 
     <style>
-        body{
-            font-family: Arial;
-            background:#f5f7fb;
-            text-align:center;
-            padding:60px;
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
         }
 
-        .box{
-            max-width:500px;
-            margin:auto;
-            background:white;
-            padding:40px;
-            border-radius:20px;
-            box-shadow:0 10px 30px rgba(0,0,0,0.08);
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        h1{
-            color:#1e293b;
+        .card {
+            width: 420px;
+            background: #111827;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
         }
 
-        p{
-            color:#64748b;
+        h1 {
+            color: #22c55e;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        .price {
+            font-size: 28px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 18px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+        }
+
+        .note {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 15px;
         }
     </style>
 </head>
 
 <body>
 
-<div class="box">
+<div class="container">
 
-    <h1>🚀 Upgrade to LeadForge Pro</h1>
+    <div class="card">
 
-    <p>
-        Unlock AI Copilot, smart lead insights, and premium tools.
-    </p>
+        <h1>Unlock LeadForge Pro 🚀</h1>
 
-    <h2>$9.99 / one-time</h2>
+        <p>AI Copilot + Advanced Lead Scoring + Dashboard Unlock</p>
 
-    <!-- PAYPAL BUTTON (Part 2) -->
-    <div id="paypal-container-L3FTPHM26TZHJ"></div>
+        <div class="price">$9.99 / month</div>
 
-    <script>
-      paypal.HostedButtons({
-        hostedButtonId: "L3FTPHM26TZHJ",
-      }).render("#paypal-container-L3FTPHM26TZHJ")
-    </script>
+        <!-- PAYPAL BUTTON -->
+        <div id="paypal-container"></div>
+
+        <script>
+            paypal.HostedButtons({
+                hostedButtonId: "L3FTPHM26TZHJ",
+                onApprove: function () {
+                    window.location.href = "/payment-success";
+                }
+            }).render("#paypal-container");
+        </script>
+
+        <a class="btn" href="{{ url_for('login') }}">Admin Login</a>
+
+        <div class="note">
+            Secure payment powered by PayPal
+        </div>
+
+    </div>
 
 </div>
 

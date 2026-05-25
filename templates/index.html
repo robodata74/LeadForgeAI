@@ -4,116 +4,278 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>LeadForgeAI | AI-Powered Lead Intelligence</title>
+    <title>LeadForge AI | Revenue Intelligence Engine</title>
 
     <meta name="description"
-          content="Stop wasting time on cold leads. LeadForgeAI helps businesses identify high-converting opportunities using intelligent lead scoring.">
+          content="AI-powered lead scoring engine that helps you identify high-converting customers instantly.">
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='styles.css') }}">
+
+    <link rel="icon"
+          href="{{ url_for('static', filename='images/favicon.png') }}">
+
+    <!-- ICON SYSTEM -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* ================= CHARNYY STYLE SPACING SYSTEM ================= */
+
+        .hero {
+            padding: 90px 0;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 52px;
+            line-height: 1.1;
+            margin-bottom: 18px;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            font-size: 17px;
+            line-height: 1.6;
+            color: #64748b;
+        }
+
+        .section {
+            padding: 90px 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            width: 92%;
+        }
+
+        .cta-row {
+            display: flex;
+            gap: 14px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 26px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .lead-card {
+            background: white;
+            padding: 26px;
+            border-radius: 18px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .pricing {
+            text-align: center;
+        }
+
+        .price-card {
+            margin-top: 30px;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+            display: inline-block;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        ul {
+            text-align: left;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding-left: 18px;
+            color: #475569;
+        }
+
+        footer {
+            padding: 50px 0;
+            text-align: center;
+            color: #64748b;
+        }
+
+        @media (max-width: 900px) {
+            .hero-grid,
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+        }
+
+        /* ================= UX POLISH LAYER (ADDED ONLY) ================= */
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #eef6ff;
+            color: #2563eb;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .feature-card h3 i {
+            margin-right: 6px;
+            color: #2563eb;
+        }
+
+        .price-card h3 i {
+            margin-right: 6px;
+            color: #2563eb;
+        }
+
+        ul li i {
+            margin-right: 6px;
+            color: #16a34a;
+        }
+
+        .cta-row a i {
+            margin-right: 6px;
+        }
+
+    </style>
 </head>
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
+<!-- ================= NAV ================= -->
 <header class="navbar">
     <div class="container nav-flex">
 
         <div class="logo">
-            <h2>LeadForge<span>AI</span></h2>
+            <h2><i class="fa-solid fa-bolt"></i> LeadForge<span style="color:#2563eb;">AI</span></h2>
         </div>
 
         <nav>
-            <a href="#features">Features</a>
-            <a href="#pricing">Pricing</a>
-            <a href="{{ url_for('login') }}">Dashboard</a>
+            <a href="#features"><i class="fa-solid fa-star"></i> Features</a>
+            <a href="#pricing"><i class="fa-solid fa-tag"></i> Pricing</a>
+            <a href="{{ url_for('login') }}"><i class="fa-solid fa-lock"></i> Dashboard</a>
         </nav>
 
     </div>
 </header>
 
-
-<!-- ================= HERO SECTION ================= -->
+<!-- ================= HERO ================= -->
 <section class="hero">
 
     <div class="container hero-grid">
 
         <!-- LEFT -->
-        <div class="hero-content">
+        <div>
 
-            <div class="badge">
-                🚀 AI-Powered Lead Intelligence
+            <!-- TONY HAYES STYLE TRUST BADGE -->
+            <div class="hero-badge">
+                <i class="fa-solid fa-sparkles"></i>
+                AI Revenue Intelligence System
             </div>
 
             <h1>
+                <i class="fa-solid fa-chart-line"></i>
                 Stop Chasing Cold Leads.
-                Let AI Show You
-                <span class="gradient-text">
-                    Who Will Actually Buy.
-                </span>
+                Let AI Show You Who Will Actually Buy.
             </h1>
 
             <p>
-                LeadForgeAI helps founders, agencies,
-                consultants and growth teams prioritize
-                the highest-converting prospects —
-                before competitors even know they exist.
+                LeadForge AI analyzes your prospects and instantly
+                identifies high-conversion opportunities so your
+                sales team focuses only on revenue-generating leads.
             </p>
 
-            <div class="hero-buttons">
+            <div class="cta-row">
+
                 <a href="#leadForm" class="btn-primary">
-                    Start Free
+                    <i class="fa-solid fa-rocket"></i> Start Free Analysis
                 </a>
 
-                <a href="#pricing" class="btn-secondary">
-                    View Pricing
+                <a href="#features" class="btn-secondary">
+                    <i class="fa-solid fa-circle-info"></i> See How It Works
                 </a>
-            </div>
 
-            <div class="hero-proof">
-                Trusted by growth-focused businesses
-                to prioritize opportunities faster.
             </div>
 
         </div>
 
-        <!-- RIGHT / FORM -->
-        <div class="lead-card" id="leadForm">
+        <!-- RIGHT -->
+        <div>
 
-            <h2>Get Started Free</h2>
+            <img src="{{ url_for('static', filename='images/leadforge-hero.png') }}"
+                 style="
+                    width:100%;
+                    border-radius:18px;
+                    box-shadow:0 20px 60px rgba(0,0,0,0.12);
+                    margin-bottom:20px;
+                 ">
 
-            <p>
-                Add your first lead and let AI score it instantly.
-            </p>
+            <div class="lead-card" id="leadForm">
 
-            <form action="/capture" method="POST">
+                <h3 style="margin-bottom:10px;">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Analyze Your First Lead
+                </h3>
 
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="Full Name"
-                    required
-                >
+                <form action="{{ url_for('capture') }}" method="POST">
 
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Business Email"
-                    required
-                >
+                    <input type="text" name="name" placeholder="Full Name" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="text" name="business" placeholder="Business Type" required>
 
-                <input
-                    type="text"
-                    name="business"
-                    placeholder="Business Type"
-                    required
-                >
+                    <button type="submit">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        Analyze Lead →
+                    </button>
 
-                <button type="submit">
-                    Analyze My Lead →
-                </button>
+                </form>
 
-            </form>
+            </div>
 
         </div>
 
@@ -121,46 +283,34 @@
 
 </section>
 
-
 <!-- ================= FEATURES ================= -->
-<section class="features" id="features">
+<section class="section">
 
     <div class="container">
 
-        <div class="section-header center">
-            <h2>Why Businesses Use LeadForgeAI</h2>
+        <h2 style="text-align:center; margin-bottom:10px;">
+            Why Teams Use LeadForge AI
+        </h2>
 
-            <p>
-                Stop guessing who will convert.
-                Start prioritizing revenue.
-            </p>
-        </div>
+        <p style="text-align:center;">
+            Clean intelligence. Faster decisions. Higher revenue.
+        </p>
 
         <div class="feature-grid">
 
             <div class="feature-card">
-                <h3>🔥 Smart Lead Scoring</h3>
-                <p>
-                    Automatically classify leads into
-                    HOT, WARM, and COLD opportunities
-                    using AI-powered intelligence.
-                </p>
+                <h3><i class="fa-solid fa-bolt"></i> Smart Scoring</h3>
+                <p>HOT / WARM / COLD classification engine.</p>
             </div>
 
             <div class="feature-card">
-                <h3>⚡ Faster Sales Decisions</h3>
-                <p>
-                    Know exactly where your sales team
-                    should focus first to maximize conversions.
-                </p>
+                <h3><i class="fa-solid fa-bullseye"></i> Faster Sales</h3>
+                <p>Focus only on high-intent leads.</p>
             </div>
 
             <div class="feature-card">
-                <h3>📈 Revenue-First Prioritization</h3>
-                <p>
-                    Spend less time chasing dead leads
-                    and more time closing profitable clients.
-                </p>
+                <h3><i class="fa-solid fa-coins"></i> Revenue Focus</h3>
+                <p>Eliminate wasted outreach time.</p>
             </div>
 
         </div>
@@ -168,83 +318,34 @@
     </div>
 
 </section>
-
-
-<!-- ================= HOW IT WORKS ================= -->
-<section class="workflow">
-
-    <div class="container center">
-
-        <h2>How LeadForgeAI Works</h2>
-
-        <div class="workflow-grid">
-
-            <div class="step-card">
-                <div class="step-number">1</div>
-                <h3>Add Lead</h3>
-                <p>
-                    Enter prospect details in seconds.
-                </p>
-            </div>
-
-            <div class="step-card">
-                <div class="step-number">2</div>
-                <h3>AI Scores Lead</h3>
-                <p>
-                    Our engine identifies buyer intent.
-                </p>
-            </div>
-
-            <div class="step-card">
-                <div class="step-number">3</div>
-                <h3>Close Faster</h3>
-                <p>
-                    Focus only on opportunities likely to convert.
-                </p>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
 
 <!-- ================= PRICING ================= -->
-<section class="pricing" id="pricing">
+<section class="section pricing">
 
-    <div class="container center">
+    <div class="container">
 
-        <h2>Simple Pricing</h2>
+        <h2><i class="fa-solid fa-crown"></i> Simple Pricing</h2>
 
-        <p class="pricing-subtitle">
-            One affordable plan for serious growth.
-        </p>
+        <p>One plan. Maximum intelligence.</p>
 
         <div class="price-card">
 
-            <div class="plan-badge">
-                MOST POPULAR
-            </div>
+            <h3><i class="fa-solid fa-gem"></i> LeadForge Pro</h3>
 
-            <h3>LeadForge Pro</h3>
-
-            <div class="price">
-                $9.99
-                <span>/month</span>
-            </div>
+            <h2 style="margin:10px 0;">
+                <i class="fa-solid fa-dollar-sign"></i> 9.99
+                <span style="font-size:14px;">/mo</span>
+            </h2>
 
             <ul>
-                <li>✅ AI Lead Scoring</li>
-                <li>✅ Admin Dashboard</li>
-                <li>✅ Lead Tracking</li>
-                <li>✅ Revenue Prioritization</li>
-                <li>✅ Future AI Copilot</li>
+                <li><i class="fa-solid fa-check"></i> AI Lead Scoring</li>
+                <li><i class="fa-solid fa-check"></i> Admin Dashboard</li>
+                <li><i class="fa-solid fa-check"></i> Lead Tracking</li>
+                <li><i class="fa-solid fa-check"></i> Copilot Assistant</li>
             </ul>
 
-            <a href="{{ url_for('login') }}"
-               class="btn-primary pricing-btn">
-                Upgrade to Pro
+            <a href="{{ url_for('upgrade') }}" class="btn-primary">
+                <i class="fa-solid fa-arrow-up"></i> Upgrade Now
             </a>
 
         </div>
@@ -253,44 +354,16 @@
 
 </section>
 
-
-<!-- ================= CTA ================= -->
-<section class="cta">
-
-    <div class="container center">
-
-        <h2>
-            Stop Losing Revenue to Cold Prospects
-        </h2>
-
-        <p>
-            Join businesses using AI to focus on leads
-            that actually convert.
-        </p>
-
-        <a href="#leadForm" class="btn-primary">
-            Get Started Now
-        </a>
-
-    </div>
-
-</section>
-
-
 <!-- ================= FOOTER ================= -->
 <footer>
 
     <div class="container">
 
-        <h3>LeadForgeAI</h3>
+        <h3><i class="fa-solid fa-bolt"></i> LeadForge AI</h3>
 
-        <p>
-            AI-powered lead intelligence for modern businesses.
-        </p>
+        <p>Revenue intelligence for modern teams.</p>
 
-        <small>
-            © 2026 LeadForgeAI. All Rights Reserved.
-        </small>
+        <small>© 2026 LeadForge AI</small>
 
     </div>
 

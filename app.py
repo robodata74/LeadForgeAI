@@ -1,17 +1,14 @@
-from flask import Flask, render_template, request, g, session, redirect, url_for, flash
+from flask import Flask, render_template, request, g, session, redirect, url_for, flash, jsonify
 import sqlite3
 import os
 from functools import wraps
 
 # ==================================================
-# BASE PATH (PYTHONANYWHERE SAFE)
+# CONFIG
 # ==================================================
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "leads.db")
 
-# ==================================================
-# FLASK APP
-# ==================================================
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "leadforge_dev_secret_2026")
 
@@ -21,8 +18,9 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "leadforge_dev_secret_2026")
 def get_db():
     db = getattr(g, "_database", None)
     if db is None:
-        db = g._database = sqlite3.connect(DB_PATH)
+        db = sqlite3.connect(DB_PATH)
         db.row_factory = sqlite3.Row
+        g._database = db
     return db
 
 
@@ -59,9 +57,8 @@ def require_login(f):
         return f(*args, **kwargs)
     return wrapper
 
-
 # ==================================================
-# LEAD SCORING ENGINE
+# LEAD SCORING (SIMULATED AI ENGINE)
 # ==================================================
 def score_lead(business: str):
     if not business:
@@ -69,12 +66,13 @@ def score_lead(business: str):
 
     b = business.lower()
 
-    if any(k in b for k in ["ai", "software", "tech", "saas", "startup"]):
+    if any(k in b for k in ["ai", "software", "tech", "saas", "startup", "automation"]):
         return "HOT"
-    if any(k in b for k in ["business", "service", "shop", "retail"]):
-        return "WARM"
-    return "COLD"
 
+    if any(k in b for k in ["business", "service", "agency", "shop", "retail"]):
+        return "WARM"
+
+    return "COLD"
 
 # ==================================================
 # HOME
@@ -83,9 +81,84 @@ def score_lead(business: str):
 def home():
     return render_template("index.html")
 
+# ==================================================
+# LEAD CAPTURE (FULL FIXED — NO CRASHES)
+# ==================================================
+@app.route("/capture", methods=["POST"])
+def capture():
+    try:
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip()
+        business = request.form.get("business", "").strip()
+
+        if not name or not email or not business:
+            flash("All fields are required.")
+            return redirect(url_for("home"))
+
+        db = get_db()
+
+        # prevent duplicates safely
+        existing = db.execute(
+            "SELECT id FROM leads WHERE email = ?",
+            (email,)
+        ).fetchone()
+
+        if existing:
+            flash("Lead already exists. Try another email.")
+            return redirect(url_for("home"))
+
+        score = score_lead(business)
+
+        db.execute("""
+            INSERT INTO leads (name, email, business, score, is_paid)
+            VALUES (?, ?, ?, ?, 0)
+        """, (name, email, business, score))
+
+        db.commit()
+
+        session["lead_email"] = email
+
+        return redirect(url_for("paywall"))
+
+    except Exception as e:
+        print("CAPTURE ERROR:", str(e))
+        flash("Something went wrong while processing your lead.")
+        return redirect(url_for("home"))
 
 # ==================================================
-# ADMIN (SAAS PROTECTED)
+# PAYWALL
+# ==================================================
+@app.route("/paywall")
+def paywall():
+    return render_template("paywall.html")
+
+# ==================================================
+# UPGRADE
+# ==================================================
+@app.route("/upgrade")
+def upgrade():
+    return render_template("upgrade.html")
+
+# ==================================================
+# PAYMENT SUCCESS (SAFE MVP LOGIC)
+# ==================================================
+@app.route("/payment-success")
+def payment_success():
+    db = get_db()
+    email = session.get("lead_email")
+
+    if email:
+        db.execute("""
+            UPDATE leads
+            SET is_paid = 1
+            WHERE email = ?
+        """, (email,))
+        db.commit()
+
+    return render_template("payment_success.html")
+
+# ==================================================
+# ADMIN DASHBOARD
 # ==================================================
 @app.route("/admin")
 @require_login
@@ -102,55 +175,16 @@ def admin():
 
     return render_template("admin.html", leads=leads, stats=stats)
 
-
 # ==================================================
-# LEAD CAPTURE
+# DELETE LEAD
 # ==================================================
-@app.route("/capture", methods=["POST"])
-def capture():
-    name = request.form.get("name", "").strip()
-    email = request.form.get("email", "").strip()
-    business = request.form.get("business", "").strip()
-
-    if not name or not email or not business:
-        flash("All fields required")
-        return redirect(url_for("home"))
-
-    score = score_lead(business)
-
+@app.route("/delete/<int:lead_id>")
+@require_login
+def delete(lead_id):
     db = get_db()
-    db.execute(
-        "INSERT INTO leads (name, email, business, score, is_paid) VALUES (?, ?, ?, ?, 0)",
-        (name, email, business, score)
-    )
+    db.execute("DELETE FROM leads WHERE id = ?", (lead_id,))
     db.commit()
-
-    return redirect(url_for("paywall"))
-
-
-# ==================================================
-# 🔒 SAAS PAYWALL PAGE
-# ==================================================
-@app.route("/paywall")
-def paywall():
-    db = get_db()
-    lead = db.execute("SELECT * FROM leads ORDER BY id DESC LIMIT 1").fetchone()
-
-    return render_template("paywall.html", lead=lead)
-
-
-# ==================================================
-# PAYMENT SUCCESS (MANUAL MARKING FOR NOW)
-# ==================================================
-@app.route("/unlock/<int:lead_id>")
-def unlock(lead_id):
-    db = get_db()
-    db.execute("UPDATE leads SET is_paid = 1 WHERE id = ?", (lead_id,))
-    db.commit()
-
-    flash("Payment successful — SaaS unlocked 🚀")
     return redirect(url_for("admin"))
-
 
 # ==================================================
 # LOGIN
@@ -166,7 +200,6 @@ def login():
 
     return render_template("login.html")
 
-
 # ==================================================
 # LOGOUT
 # ==================================================
@@ -175,9 +208,27 @@ def logout():
     session.clear()
     return redirect(url_for("home"))
 
+# ==================================================
+# COPILOT (SIMULATED AI — SAFE)
+# ==================================================
+@app.route("/copilot", methods=["POST"])
+def copilot():
+    data = request.get_json(silent=True) or {}
+    message = data.get("message", "").lower()
+
+    if "lead" in message:
+        reply = "HOT leads convert fastest — focus there first."
+    elif "sales" in message:
+        reply = "Follow up within 24 hours for best conversion rates."
+    elif "revenue" in message:
+        reply = "Target SaaS, tech, and service-based businesses."
+    else:
+        reply = "Ask me about leads, sales, or revenue strategy."
+
+    return jsonify({"reply": reply})
 
 # ==================================================
-# START APP
+# START
 # ==================================================
 if __name__ == "__main__":
     init_db()
