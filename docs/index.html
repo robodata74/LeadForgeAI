@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="LeadForge AI – AI-powered lead scoring that tells you exactly which leads are HOT, WARM, or COLD. Free tier available. No credit card required.">
+    <title>LeadForge AI | AI Lead Scoring & Sales Intelligence</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #0b1220;
+            color: #e2e8f0;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header / Nav */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            flex-wrap: wrap;
+            gap: 16px;
+            border-bottom: 1px solid #1f2937;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo i {
+            color: #3b82f6;
+        }
+
+        .logo span {
+            color: #3b82f6;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #3b82f6;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #1e293b;
+            color: #3b82f6;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 52px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subheadline {
+            font-size: 20px;
+            color: #94a3b8;
+            max-width: 700px;
+            margin: 0 auto 32px;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #2563eb;
+            color: white;
+            font-weight: 700;
+            padding: 14px 32px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .cta-button:hover {
+            background: #1d4ed8;
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px -5px #1e3a8a;
+        }
+
+        .trust-badge {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        /* Features Grid */
+        .features {
+            padding: 60px 0;
+            border-top: 1px solid #1f2937;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 48px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 20px;
+            padding: 28px;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #3b82f6;
+        }
+
+        .card i {
+            font-size: 36px;
+            color: #3b82f6;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: #94a3b8;
+        }
+
+        /* Pricing / Offer */
+        .offer {
+            background: #111827;
+            border-radius: 24px;
+            padding: 48px 32px;
+            text-align: center;
+            margin: 40px 0;
+            border: 1px solid #1f2937;
+        }
+
+        .price {
+            font-size: 48px;
+            font-weight: 800;
+            color: #f59e0b;
+        }
+
+        .offer .cta-button {
+            margin-top: 20px;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid #1f2937;
+            padding: 40px 0;
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+            .subheadline {
+                font-size: 18px;
+            }
+            .navbar {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <div class="navbar">
+            <div class="logo">
+                <i class="fa-solid fa-bolt"></i> LeadForge<span>AI</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="https://robodata74.pythonanywhere.com" target="_blank">Dashboard</a>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="badge">
+                <i class="fa-solid fa-sparkles"></i> AI Revenue Intelligence
+            </div>
+            <h1>Stop Guessing. Start Closing.<br>HOT / WARM / COLD in Seconds.</h1>
+            <div class="subheadline">
+                LeadForge AI analyzes your leads in real time. Know exactly who to call, who to nurture, and who to ignore.
+            </div>
+            <a href="https://robodata74.pythonanywhere.com" class="cta-button" target="_blank">
+                <i class="fa-solid fa-rocket"></i> Start Free Analysis
+            </a>
+            <div class="trust-badge">
+                <i class="fa-solid fa-check-circle"></i> No credit card required · 50 free leads · Cancel anytime
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div id="features" class="features">
+            <div class="section-title">How LeadForge AI Works</div>
+            <div class="grid">
+                <div class="card">
+                    <i class="fa-solid fa-bolt"></i>
+                    <h3>Instant Scoring</h3>
+                    <p>AI analyzes business descriptions and assigns a score from 0–100. HOT, WARM, or COLD in real time.</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-bullseye"></i>
+                    <h3>Focus on Revenue</h3>
+                    <p>Stop wasting calls on cold leads. Prioritize HOT prospects and increase close rates by up to 40%.</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <h3>Dashboard & Analytics</h3>
+                    <p>View all leads, filter by status, export CSV, and track your team’s performance.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing / Offer -->
+        <div id="pricing" class="offer">
+            <div class="price">$0 <span style="font-size: 18px;">/ month</span></div>
+            <p style="margin: 16px 0;">Start with <strong>50 free AI analyses</strong>. Upgrade anytime to Pro for unlimited leads, API access, and priority support.</p>
+            <a href="https://robodata74.pythonanywhere.com" class="cta-button" target="_blank">
+                <i class="fa-solid fa-crown"></i> Claim Free Account
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>© 2026 LeadForge AI – Revenue Intelligence Engine</p>
+            <p style="margin-top: 8px;">
+                <a href="https://bit.ly/leadforge" style="color:#3b82f6; text-decoration:none;">bit.ly/leadforge</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
